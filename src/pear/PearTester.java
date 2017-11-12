@@ -47,11 +47,35 @@ package pear;
  * 					  (might be unnecessary?)
  * 					
  * 					NEEDS IMMEDIATE FIX:
- * 					HOW TO CREATE OBSTACLES AND NOT LET FILL AND SHUFFLE
- * 					  CHANGE THEM
  * 					how to stop game from running; right now posA_H 
  * 					  runs out of bound before while condition becomes
  * 					  false
+ * 		
+ * 		Nov 11, 2017 
+ * 					shuffle is fixed - wont move -1's, and can throw/catch
+ * 					  exception if it runs into error or is stuck in loop 
+ * 		Nov 12, 2017
+ * 					two possible ideas to find shortest path:
+ * 					1) Breadth First Search
+ * 						 - selected node
+ * 						 - visited nodes
+ * 						 - queue nodes
+ * 					2) A* algorithm with
+ * 						 a) Manhattan Distance Heuristic
+ * 							h = |x_start - x_destination + |y_s - y_d|
+ * 						 b) Euclidean Distance Heuristic
+ * 							h = sqrt((x_s - x_d)^2 + (y_s - y_d)^2)
+ * 							slightly more accurate and favours straight lines,
+ * 							  but slower due to larger area to explore
+ * 					problem with both is that neither minimize the number
+ * 					  of "turns" made when it's on a grid
+ * 
+ * 					current shuffle() is allowed to swap a pattern with 0.
+ * 					with the end result in mind, this should be allowed in 
+ * 					  order to open door for players if they are stuck
+ * 
+ * 					new fill-1 is slower than fill-2, this is evident when
+ * 					  board dimensions are in the hundreds
  * 					
  * 		
  * 			
@@ -76,35 +100,32 @@ class PearTester {
 		
 		
 // checking if new fill-1 can add obstacles properly
-		tbSmall.fill1();
+		tbSmall.fill2();
 		System.out.println(tbSmall);
-		tbSmall.shuffle();
-		System.out.println(tbSmall);
-		
-
+//		tbSmall.shuffle();
+//		System.out.println(tbSmall);
 		
 		
-		
+// Measuring time ===================================================
+/*
 		long time1, time2;
 		
-		time1 = System.currentTimeMillis();
-		
 		TesterBoard tb1 = new TesterBoard(16,12,20);
-		
-		// 192 squares, 96 pairs, 20 patterns named 1-20		
+		time1 = System.currentTimeMillis();		
 		tb1.fill1();
 		time2 = System.currentTimeMillis();
 		System.out.println("time from fill-1: " + (time2-time1));
+		//System.out.println(tb1);
+		
 
-		System.out.println(tb1);
-		
-		
-		time1 = System.currentTimeMillis();
 		TesterBoard tb2 = new TesterBoard(16,12,20);
+		time1 = System.currentTimeMillis();
 		tb2.fill2();
 		time2 = System.currentTimeMillis();
 		System.out.println("time from fill-2: " + (time2-time1));
 		//System.out.println(tb2);
+*/
+// ===================================================================
 		
 		
 /* looping shuffle()

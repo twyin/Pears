@@ -80,14 +80,7 @@ class TesterBoard {
 	
 // ============================================================================
 // ============================================================================
-/* This first filling method picks a random pattern,
- *   then places it into two random locations in the boardArray[].
- *   BoardArray[] is basically the linear representation of 
- *   board[][], where board[i][j] = boardArray[i*height+width].
- *   After boardArray[] is filled, its contents are copied over
- *   to board[][].
- *   
- * new fill-1 that can handle obstacles (Nov 11, 2017)
+/* fill-1 that can handle obstacles
  * First it makes an int array called boardArray with size equal to
  *   the total amount of spaces in the board INCLUDING the obstacles.
  *   For example, let a 3x3 board have obstacles[] of {2,5,8}
@@ -97,22 +90,24 @@ class TesterBoard {
  *   pattern and put it into two random but available locations in 
  *   boardArray[]. After boardArray[] is filled, its contents are 
  *   copied over to board[][] wherever there is no obstacle
+ *   if 1st and 2nd random pattern generated is 2 then 1, and their 
+ *   two random locations generated are 0,2 and 1,2 respectively
+ *   -> {2,1,-1,2,1,-1,0,0,-1} 2 @ 0,3 and 1 @ 1,4
  *   
- *   
- *   !! Should assert that both board[][] boardArray[] reach their ends
+ *   !! Maybe assert that both board[][] boardArray[] reach their ends
  *   
  * 
  */
 	protected void fill1() {
 		int w = width;
 //
-		System.out.println("width: " + width);
+//		System.out.println("width: " + width);
 		int h = height;
 		int total = w*h;       // let w=5 h=4, total=20
 		// total is the number of spaces on the board INCLUDING OBSTACLES
 		int[] boardArray = new int[total];
 //
-		System.out.println("total = " + total);
+//		System.out.println("total = " + total);
 		
 		int obsLen;
 		if (obstacles==null) {
@@ -128,11 +123,13 @@ class TesterBoard {
 		}
 		
 //
+/*
 		System.out.print("empty boardArray: ");
 		for (int i=0; i<total; i++) {
 			System.out.print(boardArray[i] + ", ");
 		}
 		System.out.println("");
+*/
 		
 		int p = patterns;
 		Random rand = new Random();
@@ -143,7 +140,7 @@ class TesterBoard {
 		
 		int counter = (total-obsLen)/2;
 //
-		System.out.println("counter: " + counter);
+//		System.out.println("counter: " + counter);
 		
 		for (; counter>0; counter--) {
 			r = rand.nextInt(p)+1;        // return 1-5 inclusive
@@ -182,14 +179,16 @@ class TesterBoard {
 //			System.out.println(" f2@" + pos2);
 		}
 		
-		
+//
+/*
 		for (int i=0; i<total; i++) {
 			System.out.print(boardArray[i] + ", ");
 		}
+*/
 		
 		
 //
-		System.out.println("\nh, w: " + h + ", " + w);
+//		System.out.println("\nh, w: " + h + ", " + w);
 		for (int i=0; i<h; i++) {
 			for (int j=0; j<w; j++) {
 				board[i][j]=boardArray[i*w+j];
@@ -202,10 +201,28 @@ class TesterBoard {
 
 // ============================================================================
 // ============================================================================
-/* Given an int[] array of size (width*height), cleverly change
- *   each of them into an integer between [1:20]. Then go 
- *   through each one and swap with a random
- * 
+/* fill-2 that can handle obstacles
+ * Logically it's still the same as before, visual example of new fill-2
+ *   given obstacles[] = {2,4,6} on a 3x3 board
+ *   [ 0 0 -1 ]
+ *   [ 0 0 -1 ] + obstacles={2,4,6}  --> {0,0,-1,0,0,-1,0,0,-1}
+ *   [ 0 0 -1 ]
+ *   create array same size as empty spaces; so boardArray[6]
+ *   for every obstacle, put -1 in boardArray where it should go,
+ *   which would be boardArray[2], [4], and [6] for the above example
+ *   put a pattern in boardArry[i] based on j; what they are is 
+ *   explained where they are declared below
+ *   j/2%patterns+1 explained : "+ 1" is so that the patterns would 
+ *   start at 1 and not 0
+ *   AS LONG AS THE AMOUNT OF EMPTY SPACES ON BOARD IS EVEN,
+ *   this formula also assures that they would appear in pairs!
+ *   That's because since i/2 = (i+1)/2 if i is even and the first
+ *   index is 0 which is even
+ *   (if it was only i%patterns, program wouldn't be able to confirm 
+ *   they're in even amounts)
+ *   {0,0,-1,0,0,-1,0,0,-1} -> {1,1,-1,2,2,-1,3,3,-1}
+ *   afterwards, swap every pattern with another and put into board
+ *   
  */
 	protected void fill2() {
 		int w = width;
@@ -213,25 +230,56 @@ class TesterBoard {
 		int total = w*h;
 		int[] boardArray = new int[total];
 		
-		int counter = 0;
+		int i;               // general variable used in for loops
+		int j=0;             // counts the empty spaces in boardArray
+		int obsLen;          // length of obstacle[]
 		int pos;
 		int temp;
-		
-		for (int i=0; i<total; i++) {
-			boardArray[i] = i/2%patterns+1;
-		}
-		
+		boolean swapped;
 		Random rand = new Random();
-		for (; counter<total; counter++) {
-			// swap boardArray[counter] and [r]
-			pos = rand.nextInt(total);
-			temp = boardArray[counter];
-			boardArray[counter] = boardArray[pos];
-			boardArray[pos] = temp;
+		
+		if (this.obstacles==null) {
+		// if obstacles[] = null, its length is undefined -> program crashes
+			obsLen=0;
+		} else {
+			obsLen = obstacles.length;
 		}
 		
-		for (int i=0; i<h; i++) {
-			for (int j=0; j<w; j++) {
+		for (i=0; i<obsLen; i++) {
+		// obstacles holds the indexes in boardArray that will be -1
+			boardArray[obstacles[i]] = -1;
+//
+			System.out.println(boardArray[obstacles[i]]);
+		}
+		
+		for (i=0; i<total; i++) {
+		// reason for two counters, j to go down boardArray, j to count
+		//   empty spaces. This is so no new value is assigned to obstacle
+			if (boardArray[i] != -1) {
+				boardArray[i] = j/2%patterns+1;
+				j++;
+			}
+		}
+		// for a 5x4 board with 4 obstacles, j=16 by end of ^ loop
+		
+		for (i=0; i<total; i++) {
+			// swap boardArray[counter] and [pos]
+			swapped=false;
+			if (boardArray[i]!=-1) {
+				while (swapped==false) {
+					pos = rand.nextInt(total);
+					if (boardArray[pos]!=-1) {
+						temp = boardArray[i];
+						boardArray[i] = boardArray[pos];
+						boardArray[pos] = temp;
+						swapped=true;
+					}
+				}
+			}
+		}
+		
+		for (i=0; i<h; i++) {
+			for (j=0; j<w; j++) {
 				board[i][j]=boardArray[i*w+j];
 			}
 		}
@@ -243,6 +291,9 @@ class TesterBoard {
 // ============================================================================
 // ============================================================================
 // shuffle the integers in board[][]
+/* Note: if for some reason there are 0's on the board, current 
+ *   shuffle is allow to swap pattern with a 0
+ */
 		protected void shuffle() {
 			int w = width;
 			int h = height;
@@ -253,13 +304,41 @@ class TesterBoard {
 			Random rand = new Random();
 			System.out.println("\nfrom shuffle()");
 			
+			boolean swapped;
 			for (int i=0; i<h; i++) {
 				for (int j=0; j<w; j++) {
-					posW = rand.nextInt(w);
-					posH = rand.nextInt(h);
-					temp = board[i][j];
-					board[i][j] = board[posH][posW];
-					board[posH][posW] = temp;
+					swapped = false;
+					// swap with a random if neither are obstacles, else
+					//   pick another place to swap the original with
+					
+					if (board[i][j]!=-1) {
+					//if (board[i][j]>0) {
+					// ^ switch to this if condition if shuffle must keep
+					//  the "shape" of occupied spaces!
+					// with (board[i][j]!=-1), shuffle is allowed to swap
+					// patterns with 0's
+						try {
+							while (swapped==false) {
+								posW = rand.nextInt(w);
+								posH = rand.nextInt(h);
+								
+								if (board[posH][posW]!= -1 ) {
+								//if (board[posH][posW] > 0 ) {
+								// ^ switch to this if condition if shuffle must keep
+								//  the "shape" of occupied spaces
+									temp = board[i][j];
+									board[i][j] = board[posH][posW];
+									board[posH][posW] = temp;
+									swapped=true;
+								}
+							}
+						} catch (Exception e) {
+							System.out.println(e.getMessage());
+							System.out.println("Error from shuffle while "
+									+ "attempting to swap at (i,j): "
+									+ "(" + i + "," + j + ")");
+						}
+					}
 				}
 			}		
 		}
