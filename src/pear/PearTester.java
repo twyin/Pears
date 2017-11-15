@@ -76,6 +76,23 @@ package pear;
  * 
  * 					new fill-1 is slower than fill-2, this is evident when
  * 					  board dimensions are in the hundreds
+ * 
+ * 		Nov 14, 2017
+ * 					make a method that finds the minimum number of turns
+ * 					  from A to A'. With that information, utilize A* 
+ * 					  algorithm such that h is some max number when program
+ * 					  detects that it is making more turns than necessary
+ * 
+ * 					final version will probably need a Board as base class,
+ * 					  and then GameBorard and PathBoard as derived classes.
+ * 					  Additionally, unsure of what type of objects to use 
+ * 					  to implement A* algorithm yet. This is because the 
+ * 					  method to find minimum of turns from A to A' requires
+ * 					  writing on a new board, since overwriting the 
+ * 					  gameboard itself isn't suitable, new one must be 
+ * 					  made. By nature it would have different purposes and 
+ * 					  therefore methods, it would be better to made two 
+ * 					  derived classes from one base Board class
  * 					
  * 		
  * 			
@@ -92,11 +109,11 @@ class PearTester {
 		
 		Scanner keyboard = new Scanner(System.in);
 		
-		
-		
-		
 		int[] ob1 = {4,9,14,19};
-		TesterBoard tbSmall = new TesterBoard(5, 4, 5, ob1);
+		TesterGameBoard tbSmall = new TesterGameBoard(4, 5, 5, ob1);
+		
+		TesterBoard b1 = new TesterBoard(2, 3);
+		System.out.println(b1);
 		
 		
 // checking if new fill-1 can add obstacles properly
