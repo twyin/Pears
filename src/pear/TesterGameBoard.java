@@ -63,7 +63,30 @@ class TesterGameBoard extends TesterBoard {
 		this.obstacles = o;
 	}
 	
-	
+// toString
+	public String toString() {
+		int h = getHeight();
+		int w = getWidth();
+		
+		// for personal esthetics
+		// precise formula: (width*3+4 - "xGameboardx".length()) in half, then + "xGameboardx".length()
+		
+		String drawBoard = String.format("%"+ ((w*3+4-11)/2+11) +"s", 
+				"xGameboardx").replace(' ', '=');
+		drawBoard = String.format("%-" + (w*3+4) + "s\n", 
+				drawBoard).replace(' ', '=').replace('x',' ');
+		
+		for (int i=0; i<h; i++) {
+			drawBoard += ("[ ");
+			for (int j=0; j<w; j++) {
+				drawBoard += (String.format("%2d ", getValue(i,j)));
+				//drawBoard += (getValue(i,j) + " ");
+			}
+			drawBoard+=" ]\n";
+		}
+		return drawBoard;
+	}
+
 
 // ============================================================================
 // ============================================================================
@@ -204,8 +227,6 @@ class TesterGameBoard extends TesterBoard {
 		for (i=0; i<obsLen; i++) {
 		// obstacles holds the indexes in boardArray that will be -1
 			boardArray[obstacles[i]] = -1;
-//
-			System.out.println(boardArray[obstacles[i]]);
 		}
 		
 		for (i=0; i<total; i++) {
@@ -251,81 +272,139 @@ class TesterGameBoard extends TesterBoard {
 /* Note: if for some reason there are 0's on the board, current 
  *   shuffle is allow to swap pattern with a 0
  */
-		protected void shuffle() {
-			int h = getHeight();
-			int w = getWidth();
-			
-			int posH;
-			int posW;
-			int temp;
-			Random rand = new Random();
-			System.out.println("\nfrom shuffle()");
-			
-			boolean swapped;
-			for (int i=0; i<h; i++) {
-				for (int j=0; j<w; j++) {
-					swapped = false;
-					// swap with a random if neither are obstacles, else
-					//   pick another place to swap the original with
-					
-					if (getValue(i,j) != -1) {
-//					if (board[i][j]!=-1) {
-					//if (board[i][j]>0) {
-					// ^ switch to this if condition if shuffle must keep
-					//  the "shape" of occupied spaces!
-					// with (board[i][j]!=-1), shuffle is allowed to swap
-					// patterns with 0's
-						try {
-							while (swapped==false) {
-								posW = rand.nextInt(w);
-								posH = rand.nextInt(h);
-								
-								if (getValue(posH, posW) != -1) {
-//								if (board[posH][posW]!= -1 ) {
-								//if (board[posH][posW] > 0 ) {
-								// ^ switch to this if condition if shuffle must keep
-								//  the "shape" of occupied spaces
-									temp = getValue(i, j);
-//									temp = board[i][j];
-									setValue(i, j, getValue(posH, posW));
-//									board[i][j] = board[posH][posW];
-									setValue(posH, posW, temp);
-//									board[posH][posW] = temp;
-									swapped=true;
-								}
-							}
-						} catch (Exception e) {
-							System.out.println(e.getMessage());
-							System.out.println("Error from shuffle while "
-									+ "attempting to swap at (i,j): "
-									+ "(" + i + "," + j + ")");
-						}
-					}
-				}
-			}		
-		}
-// ============================================================================
-// ============================================================================
-		
-		
-// ============================================================================
-// ============================================================================
-	public String toString() {
+	protected void shuffle() {
 		int h = getHeight();
 		int w = getWidth();
-		String drawBoard = "==== Gameboard ====\n";
+		
+		int posH;
+		int posW;
+		int temp;
+		Random rand = new Random();
+		System.out.println("\nfrom shuffle()");
+		
+		boolean swapped;
 		for (int i=0; i<h; i++) {
-			drawBoard += ("[ ");
 			for (int j=0; j<w; j++) {
-				drawBoard += (getValue(i,j) + " ");
+				swapped = false;
+				// swap with a random if neither are obstacles, else
+				//   pick another place to swap the original with
+				
+				if (getValue(i,j) != -1) {
+//					if (board[i][j]!=-1) {
+				//if (board[i][j]>0) {
+				// ^ switch to this if condition if shuffle must keep
+				//  the "shape" of occupied spaces!
+				// with (board[i][j]!=-1), shuffle is allowed to swap
+				// patterns with 0's
+					try {
+						while (swapped==false) {
+							posW = rand.nextInt(w);
+							posH = rand.nextInt(h);
+							
+							if (getValue(posH, posW) != -1) {
+//								if (board[posH][posW]!= -1 ) {
+							//if (board[posH][posW] > 0 ) {
+							// ^ switch to this if condition if shuffle must keep
+							//  the "shape" of occupied spaces
+								temp = getValue(i, j);
+//									temp = board[i][j];
+								setValue(i, j, getValue(posH, posW));
+//									board[i][j] = board[posH][posW];
+								setValue(posH, posW, temp);
+//									board[posH][posW] = temp;
+								swapped=true;
+							}
+						}
+					} catch (Exception e) {
+						System.out.println(e.getMessage());
+						System.out.println("Error from shuffle while "
+								+ "attempting to swap at (i,j): "
+								+ "(" + i + "," + j + ")");
+					}
+				}
 			}
-			drawBoard+="]\n";
-		}
-		return drawBoard;
+		}		
 	}
 // ============================================================================
 // ============================================================================
+
 		
-				
+// ============================================================================
+// ============================================================================		
+
+/* Since I'm not 100% sure of what kind of obstacles I will run into
+ *   while implementing the minimum-turns method, I'll do make it a
+ *   method of TesterGameBoard until I make it into a class of its 
+ *   own. Also not sure if it would be better to have this method as
+ *   its own class or as a method of Gameboard
+ */
+	
+	
+// method to make new board into pure path and non-path squares, in
+//   other words, everything besides 0's are non-path
+	
+	protected TesterBoard pave (TesterGameBoard b) {
+
+		int height = b.getHeight();
+		int width = b.getWidth();
+		TesterBoard tb = new TesterBoard(height+2, width+2);
+		
+		for (int i=0; i<height; i++) {
+			for (int j=0; j<width; j++) {
+				if (b.getValue(i,j) != 0) {
+					tb.setValue(i+1, j+1, -1);
+				} else {
+					tb.setValue(i+1, j+1, 0);
+				}
+			}
+		}
+		return tb;
+	}
+	
+	
+
+// minTurns should be a method of GameBoard that return minimum
+//   number of turns from A to A'
+	protected int minTurns( int y1, int x1, int y2, int x2) {
+		int height = this.getHeight() + 2;
+		int width = this.getWidth() + 2;
+		int posH = y1++;
+		int posW = x1++;
+		int minTurn = 0;
+// make an empty board with extra zero's around first, and -1 
+//   in place of patterns
+		TesterBoard board = pave(this);
+		// shouldn't have anything other than -1/0/1's on it so 
+		//   not necessary to make it a new Gameboard
+		
+		System.out.println(board);
+		
+		return minTurn;
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
+
+
+
+
+
+
+
+
+

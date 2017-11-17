@@ -67,19 +67,47 @@ class TesterBoard {
 	public String toString() {
 		int h = this.height;
 		int w = this.width;
-		String drawBoard = "==== Board ====\n";
+		
+		// for personal esthetics
+		// precise formula: (width*3+4 - " Board ".length()) in half, then + " Board ".length()
+		String drawBoard = String.format("%"+ ((w*3-1)/2+5) +"s", 
+				"xBoardx").replace(' ', '=');
+		drawBoard = String.format("%-" + (w*3+4) + "s\n", 
+				drawBoard).replace(' ', '=').replace('x',' ');
+		
 		for (int i=0; i<h; i++) {
 			drawBoard += ("[ ");
 			for (int j=0; j<w; j++) {
-				drawBoard += (board[i][j] + " ");
+				drawBoard += (String.format("%2d ", board[i][j]));
+				//drawBoard += (board[i][j] + " ");
 			}
-			drawBoard+="]\n";
+			drawBoard+=" ]\n";
 		}
 		return drawBoard;
 	}
 // ============================================================================
 // ============================================================================
-	
+
+/*
+	protected void pave (TesterBoard b) {
+		int height = b.getHeight();
+		int width = b.getWidth();
 		
+		height++;
+		width++;
+		
+		int val;
+		for (int i=1; i<height; i++) {
+			for (int j=1; j<width; j++) {
+				if (b.getValue(i,j) != 0) {
+					val=-1;
+				} else {
+					val=0;
+				}
+				this.setValue(i, j, val);
+			}
+		}	
+	}
+*/	
 }
 

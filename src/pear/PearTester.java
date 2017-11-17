@@ -103,24 +103,35 @@ package pear;
 import java.util.Scanner;
 
 // protected
-class PearTester {
+class PearTester{
 	
+
 	public static void main(String[] args) {
 		
 		Scanner keyboard = new Scanner(System.in);
 		
-		int[] ob1 = {4,9,14,19};
-		TesterGameBoard tbSmall = new TesterGameBoard(4, 5, 5, ob1);
-		
 		TesterBoard b1 = new TesterBoard(2, 3);
 		System.out.println(b1);
 		
+		int[] ob1 = {4,9,14,19};
+		TesterGameBoard tbSmall = new TesterGameBoard(4, 5, 5, ob1);
 		
-// checking if new fill-1 can add obstacles properly
+// checking if new fill can add obstacles properly
 		tbSmall.fill2();
 		System.out.println(tbSmall);
-//		tbSmall.shuffle();
-//		System.out.println(tbSmall);
+		tbSmall.shuffle();
+		System.out.println(tbSmall);
+		
+// Need proper format or else minTurns must be 
+// static method of main here
+		
+		int i = tbSmall.minTurns(1, 1, 2, 2);
+		System.out.println("i = " + i);
+		
+		
+		
+		
+		
 		
 		
 // Measuring time ===================================================
@@ -196,5 +207,8 @@ class PearTester {
 		
 		keyboard.close();
 	}
+
+
+
 
 }
