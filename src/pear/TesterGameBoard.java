@@ -343,7 +343,7 @@ class TesterGameBoard extends TesterBoard {
 // method to make new board into pure path and non-path squares, in
 //   other words, everything besides 0's are non-path
 	
-	protected TesterBoard pave (TesterGameBoard b) {
+	protected TesterBoard pave (TesterGameBoard b, int y1, int x1) {
 
 		int height = b.getHeight();
 		int width = b.getWidth();
@@ -358,7 +358,59 @@ class TesterGameBoard extends TesterBoard {
 				}
 			}
 		}
+		tb.setValue(y1, x1, 1);
 		return tb;
+	}
+	
+
+	
+	
+	
+// helper function for minTurns that will take existing 1's 
+// and replace 0's sharing the same x or y value and must be touching
+	protected void addTurn(TesterBoard board) {
+		int height = this.getHeight();
+		int width = this.getWidth();
+		int extend;
+		boolean UP, DOWN, LEFT, RIGHT;
+		for (int i=0; i<height; i++) {
+			for (int j=0; j<width; j++) {
+				if (board.getValue(i, j) == 1) {
+					
+					// extend 1 up/down/left/right until it hits edge or -1
+					// might look cleaner to make method to do so but feels excessive..?
+					
+					// board.extendUP(i,j);
+					// board.extendDOWN(i,j);
+					// board.extendLEFT(i,j);
+					// board.extendRIGHT(i,j);
+					
+					extend = 1;
+					UP = true;
+					DOWN = true;
+					LEFT = true;
+					RIGHT = true;
+					
+					while (UP==true) {
+						if (i-extend >= 0 && (board.getValue(i-extend,j)!=-1)) {
+							board.setValue(i-extend, j, 1);
+							extend++;
+						} else { // has hit edge
+							UP=false;
+						}
+					}
+					
+					
+					
+					
+					
+					
+					
+				}
+			}
+		}
+		
+		
 	}
 	
 	
@@ -368,15 +420,41 @@ class TesterGameBoard extends TesterBoard {
 	protected int minTurns( int y1, int x1, int y2, int x2) {
 		int height = this.getHeight() + 2;
 		int width = this.getWidth() + 2;
-		int posH = y1++;
+		int posH = y1++;        // correct offset from outside border
 		int posW = x1++;
 		int minTurn = 0;
 // make an empty board with extra zero's around first, and -1 
 //   in place of patterns
-		TesterBoard board = pave(this);
+		TesterBoard board = pave(this, y1, x1);
 		// shouldn't have anything other than -1/0/1's on it so 
-		//   not necessary to make it a new Gameboard
+		//   not necessary to make it a new Game board
 		
+
+// index for paths board is different than that of gameboard:
+// -1 is obstacles and patterns, things that a path can't travel thru
+// 0 is open for travel
+// 1 marks those within reach of x turns
+		
+// first mark board with coordinates that are reachable within 0 turn,
+//   then check if there's a 1 at (y2, x2)
+// repeat 1 turn
+// repeat 2 turns
+// repeat 3 turns
+
+		
+		addTurn(board);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
 		System.out.println(board);
 		
 		return minTurn;

@@ -62,7 +62,7 @@ package pear;
  * 						 - queue nodes
  * 					2) A* algorithm with
  * 						 a) Manhattan Distance Heuristic
- * 							h = |x_start - x_destination + |y_s - y_d|
+ * 							h = |x_start - x_destination| + |y_s - y_d|
  * 						 b) Euclidean Distance Heuristic
  * 							h = sqrt((x_s - x_d)^2 + (y_s - y_d)^2)
  * 							slightly more accurate and favours straight lines,
@@ -93,6 +93,16 @@ package pear;
  * 					  made. By nature it would have different purposes and 
  * 					  therefore methods, it would be better to made two 
  * 					  derived classes from one base Board class
+ * 
+ * 		Nov 27, 2017
+ * 					idea for marking coordinates reachable within x amount
+ * 					  of turns: from the gameboard, a new board will be
+ * 					  initialized with 0's and -1's, with a single 1 at the
+ * 					  starting position A. Then a method called addTurn will 
+ * 					  take every 1 on the board, and replace every 0 with 
+ * 					  same x or y position with 1. As a result, every 1 
+ * 					  indicates which coordinates can be reached with turns 
+ * 					  allowed so far
  * 					
  * 		
  * 			
@@ -125,7 +135,7 @@ class PearTester{
 // Need proper format or else minTurns must be 
 // static method of main here
 		
-		int i = tbSmall.minTurns(1, 1, 2, 2);
+		int i = tbSmall.minTurns(0, 0, 0, 5);
 		System.out.println("i = " + i);
 		
 		
