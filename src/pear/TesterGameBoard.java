@@ -329,103 +329,24 @@ class TesterGameBoard extends TesterBoard {
 // ============================================================================
 
 		
-// ============================================================================
-// ============================================================================		
-
-/* Since I'm not 100% sure of what kind of obstacles I will run into
- *   while implementing the minimum-turns method, I'll do make it a
- *   method of TesterGameBoard until I make it into a class of its 
- *   own. Also not sure if it would be better to have this method as
- *   its own class or as a method of Gameboard
- */
-	
-	
-// method to make new board into pure path and non-path squares, in
-//   other words, everything besides 0's are non-path
-	
-	protected TesterBoard pave (TesterGameBoard b, int y1, int x1) {
-
-		int height = b.getHeight();
-		int width = b.getWidth();
-		TesterBoard tb = new TesterBoard(height+2, width+2);
-		
-		for (int i=0; i<height; i++) {
-			for (int j=0; j<width; j++) {
-				if (b.getValue(i,j) != 0) {
-					tb.setValue(i+1, j+1, -1);
-				} else {
-					tb.setValue(i+1, j+1, 0);
-				}
-			}
-		}
-		tb.setValue(y1, x1, 1);
-		return tb;
-	}
-	
-
-	
-	
-	
-// helper function for minTurns that will take existing 1's 
-// and replace 0's sharing the same x or y value and must be touching
-	protected void addTurn(TesterBoard board) {
-		int height = this.getHeight();
-		int width = this.getWidth();
-		int extend;
-		boolean UP, DOWN, LEFT, RIGHT;
-		for (int i=0; i<height; i++) {
-			for (int j=0; j<width; j++) {
-				if (board.getValue(i, j) == 1) {
-					
-					// extend 1 up/down/left/right until it hits edge or -1
-					// might look cleaner to make method to do so but feels excessive..?
-					
-					// board.extendUP(i,j);
-					// board.extendDOWN(i,j);
-					// board.extendLEFT(i,j);
-					// board.extendRIGHT(i,j);
-					
-					extend = 1;
-					UP = true;
-					DOWN = true;
-					LEFT = true;
-					RIGHT = true;
-					
-					while (UP==true) {
-						if (i-extend >= 0 && (board.getValue(i-extend,j)!=-1)) {
-							board.setValue(i-extend, j, 1);
-							extend++;
-						} else { // has hit edge
-							UP=false;
-						}
-					}
-					
-					
-					
-					
-					
-					
-					
-				}
-			}
-		}
-		
-		
-	}
-	
-	
 
 // minTurns should be a method of GameBoard that return minimum
 //   number of turns from A to A'
-	protected int minTurns( int y1, int x1, int y2, int x2) {
+	protected int minTurns(int y1, int x1, int y2, int x2) {
+		// (y1,x1) is A, (y2,x2) is A'
 		int height = this.getHeight() + 2;
 		int width = this.getWidth() + 2;
 		int posH = y1++;        // correct offset from outside border
 		int posW = x1++;
 		int minTurn = 0;
+		int addedTurns = 0;
+		boolean found = false;
 // make an empty board with extra zero's around first, and -1 
 //   in place of patterns
-		TesterBoard board = pave(this, y1, x1);
+		TesterPathBoard pb = new TesterPathBoard(height, width);
+		pb.pave(this, y1, x1, y2, x2);
+		
+		
 		// shouldn't have anything other than -1/0/1's on it so 
 		//   not necessary to make it a new Game board
 		
@@ -440,48 +361,38 @@ class TesterGameBoard extends TesterBoard {
 // repeat 1 turn
 // repeat 2 turns
 // repeat 3 turns
+		
+//		pb.addTurn();
+		
+		
+		int maxT = pb.getMaxTurns();
+// remove comment indicator when addTurn() works properly;
+// SHOULD be able to actual minimum of turns needed
+		while (found==false && addedTurns <= maxT) {
+			pb.addTurn();
+//
+			System.out.println("After " + addedTurns + " turns");
+			System.out.println(pb + "hello?");
+			if (pb.getValue(y2+1, x2+1)==1) {
+				found=true;
+			} else {
+				++addedTurns;
+			}
+		}
 
-		
-		addTurn(board);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
-		System.out.println(board);
-		
-		return minTurn;
+		if (found==true) {
+			return addedTurns;
+		}
+		// else
+		return maxT+1;
+	
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 
 }
-
-
-
-
-
 
 
 

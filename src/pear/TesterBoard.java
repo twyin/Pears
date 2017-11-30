@@ -7,7 +7,7 @@ class TesterBoard {
 	private int width;
 //	private int patterns;
 //	private int unsolvedPairs;
-//	private int[] obstacles; // initialized to null
+//	private int[] obstacles;          // initialized to null
 	private int[][] board;
 	
 	
@@ -41,6 +41,7 @@ class TesterBoard {
 	protected int getValue(int h, int w) {
 		return board[h][w];
 	}
+	
 	
 // setter's
 // height and width should most definitely not change throughout
@@ -87,27 +88,6 @@ class TesterBoard {
 	}
 // ============================================================================
 // ============================================================================
-
-/*
-	protected void pave (TesterBoard b) {
-		int height = b.getHeight();
-		int width = b.getWidth();
-		
-		height++;
-		width++;
-		
-		int val;
-		for (int i=1; i<height; i++) {
-			for (int j=1; j<width; j++) {
-				if (b.getValue(i,j) != 0) {
-					val=-1;
-				} else {
-					val=0;
-				}
-				this.setValue(i, j, val);
-			}
-		}	
-	}
-*/	
+	
 }
 
