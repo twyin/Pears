@@ -3,6 +3,8 @@ package pear;
 import java.util.Random;
 
 class TesterGameBoard extends TesterBoard {
+	private final int maxTurns = 3;   // max amount of turns allowed is set to 3
+
 	private int patterns;
 	private int unsolvedPairs;
 	private int[] obstacles; // initialized to null
@@ -30,6 +32,10 @@ class TesterGameBoard extends TesterBoard {
 	}
 	
 // getter's
+	protected int getMaxTurns() {
+		return maxTurns;
+	}
+	
 	protected int getPatterns() {
 		return this.patterns;
 	}
@@ -71,7 +77,7 @@ class TesterGameBoard extends TesterBoard {
 		// for personal esthetics
 		// precise formula: (width*3+4 - "xGameboardx".length()) in half, then + "xGameboardx".length()
 		
-		String drawBoard = String.format("%"+ ((w*3+4-11)/2+11) +"s", 
+		String drawBoard = String.format("%"+ ((w*3-7)/2+11) +"s", 
 				"xGameboardx").replace(' ', '=');
 		drawBoard = String.format("%-" + (w*3+4) + "s\n", 
 				drawBoard).replace(' ', '=').replace('x',' ');
@@ -103,6 +109,7 @@ class TesterGameBoard extends TesterBoard {
  *   if 1st and 2nd random pattern generated is 2 then 1, and their 
  *   two random locations generated are 0,2 and 1,2 respectively
  *   -> {2,1,-1,2,1,-1,0,0,-1} 2 @ 0,3 and 1 @ 1,4
+ * fill1 "shuffles" with boardArray before board is filled
  *   
  *   !! Maybe assert that both board[][] boardArray[] reach their ends
  *   
@@ -201,6 +208,9 @@ class TesterGameBoard extends TesterBoard {
  *   they're in even amounts)
  *   {0,0,-1,0,0,-1,0,0,-1} -> {1,1,-1,2,2,-1,3,3,-1}
  *   afterwards, swap every pattern with another and put into board
+ * fill2 has a loop at the end that swaps elements of boardArray before
+ *   putting it in the board. Therefore it is shuffle before board is
+ *   filled. 
  *   
  */
 	protected void fill2() {
@@ -364,20 +374,23 @@ class TesterGameBoard extends TesterBoard {
 		
 //		pb.addTurn();
 		
-		
-		int maxT = pb.getMaxTurns();
+		int turnMarker = 1;  
+		// turnMarker marks turns reachable within 0 turn with 1, 1 turn with 2, etc
+		int maxT = this.getMaxTurns();
 // remove comment indicator when addTurn() works properly;
 // SHOULD be able to actual minimum of turns needed
 		while (found==false && addedTurns <= maxT) {
-			pb.addTurn();
+//			System.out.println("turnMarker = " + turnMarker);
+			pb.addTurn(turnMarker);
 //
-			System.out.println("After " + addedTurns + " turns");
-			System.out.println(pb + "hello?");
-			if (pb.getValue(y2+1, x2+1)==1) {
+			//System.out.println("With " + addedTurns + " turns");
+			//System.out.println(pb);
+			if (pb.getValue(y2+1, x2+1) > 0 ) {
 				found=true;
 			} else {
 				++addedTurns;
 			}
+			turnMarker++;
 		}
 
 		if (found==true) {
@@ -387,11 +400,6 @@ class TesterGameBoard extends TesterBoard {
 		return maxT+1;
 	
 	}
-
-
-	
-	
-
 }
 
 

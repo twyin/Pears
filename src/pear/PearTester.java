@@ -1,6 +1,8 @@
 package pear;
 
 
+import java.util.InputMismatchException;
+
 /* Notes:
  *       -1 = obstacle
  *        0 = empty
@@ -192,6 +194,12 @@ package pear;
  *                    one on the outside and not buried deep in the centered)
  *                    and show user where its A' is at
  *                    
+ *			Dec 6, 2017
+ *					fill1 and fill2 swaps its elements before board is built.
+ *                    So basically gameboards are made shuffled. Shuffle() is
+ *                    just another method because the original plan was to 
+ *                    give players 3 chances to shuffle
+ *                    
  *                    
  */
 		
@@ -206,103 +214,92 @@ class PearTester{
 		
 		Scanner keyboard = new Scanner(System.in);
 		
-		TesterBoard b1 = new TesterBoard(2, 3);
-		System.out.println(b1);
+//		TesterBoard b1 = new TesterBoard(10, 12);
+//		System.out.println(b1);
 		
-		int[] ob1 = {4,9,14,19};
-		TesterGameBoard tbSmall = new TesterGameBoard(4, 5, 5, ob1);
+		//int[] ob1 = {4,9,14,19};
+		//TesterGameBoard tbSmall = new TesterGameBoard(4, 5, 5, ob1);
+		
+		int[] ob2 = {16,27,38, 46,47,48,49,50,51,52, 60,71,82};
+		TesterGameBoard tbBig = new TesterGameBoard(9, 11, 8, ob2);
+		
+		int maxTurns = tbBig.getMaxTurns();
 		
 // checking if new fill can add obstacles properly
-		tbSmall.fill2();
-		System.out.println(tbSmall);
-		tbSmall.shuffle();
-		System.out.println(tbSmall);
-		
-// Need proper format or else minTurns must be 
-// static method of main here
-		
-		int i = tbSmall.minTurns(3, 2, 0, 0);
-		System.out.println("min turns needed: " + i);
-		
-				
-		
-		
-		
-		
-		
-		
-// Measuring time ===================================================
-/*
-		long time1, time2;
-		
-		TesterBoard tb1 = new TesterBoard(16,12,20);
-		time1 = System.currentTimeMillis();		
-		tb1.fill1();
-		time2 = System.currentTimeMillis();
-		System.out.println("time from fill-1: " + (time2-time1));
-		//System.out.println(tb1);
-		
+		tbBig.fill2();
+		System.out.println(tbBig);
+		//tbBig.shuffle();
+		//System.out.println(tbBig);
 
-		TesterBoard tb2 = new TesterBoard(16,12,20);
-		time1 = System.currentTimeMillis();
-		tb2.fill2();
-		time2 = System.currentTimeMillis();
-		System.out.println("time from fill-2: " + (time2-time1));
-		//System.out.println(tb2);
-*/
-// ===================================================================
 		
-		
-/* looping shuffle()
-		System.out.println("shuffle times? ");
-		int shufTimes = keyboard.nextInt();
-		
-		time1 = System.currentTimeMillis();
-		while (shufTimes>0) {
-			tb2.shuffle();
-			shufTimes--;
-		}
-		time2 = System.currentTimeMillis();
-		System.out.println("time for shuffling " + shufTimes + 
-				           " times: " + (time2-time1));
-*/
-		
-//		System.out.println(tb1);
-		
-
+		int i; //  = tbSmall.minTurns(3, 2, 0, 0);
+//		System.out.println("min turns needed: " + i);
 // ======================================================================= PLAY
-/*
-		System.out.println("Please enter integers separated by a space");
-		System.out.println("Enter negative integer to quit");
-		int intA, intB;
-		int posA_H, posA_W, posB_H, posB_W;
-		do {
-			System.out.println("Enter coordinate pair =================");
-			System.out.print("A: ");
-			posA_H = keyboard.nextInt();
-			posA_W = keyboard.nextInt();
-			intA = tbSmall.getValue(posA_H, posA_W);
-			
-			System.out.print("B: ");
-			posB_H = keyboard.nextInt();
-			posB_W = keyboard.nextInt();
-			intB = tbSmall.getValue(posB_H, posB_W);
-			
-			if(intA==intB) {
-				tbSmall.setToEmpty(posA_H, posA_W);
-				tbSmall.setToEmpty(posB_H, posB_W);
-			}
-			System.out.print(tbSmall);
-		} while (posA_H>=0);
-*/
-		
-		
 
+		System.out.println("To quit, enter -1");
+		System.out.println("Please enter coordinate separated by a space");
+		int intA, intB;
+		int posA_H = 0;
+		int posA_W, posB_H, posB_W;
+		boolean quit = false;   // set quit to false if want to try game
+		
+		while (quit == false){
+			try {
+//				System.out.println("Enter coordinate pair =================");
+				System.out.print("A: ");
+				
+				
+				
+				posA_H = keyboard.nextInt();
+				
+				if (posA_H == -1) {
+					quit = true;
+					System.out.println("Pear has exited");
+					System.exit(0);
+				}
+				//posA_H = keyboard.nextInt();
+				posA_W = keyboard.nextInt();
+				intA = tbBig.getValue(posA_H, posA_W);
+				System.out.print("A': ");
+				posB_H = keyboard.nextInt();
+				posB_W = keyboard.nextInt();
+				intB = tbBig.getValue(posB_H, posB_W);
+				
+				if (intA==0 || intB==0) {
+					System.out.println("Coordinate is empty");
+				} else if (posA_H==posB_H && posA_W==posB_W) {
+					System.out.println("They're the same");
+				} else if (intA!=intB) {
+					System.out.println("Invalid pear");
+				} else {
+					assert(posA_H!=posB_H && posA_W!=posB_W);
+					assert(intA==intB);
+					i = tbBig.minTurns(posA_H, posA_W,  posB_H, posB_W);
+					if (i > maxTurns) {
+						System.out.println("Invalid: must be within " + maxTurns + " turns");
+					} else {
+						// valid number of turns
+						System.out.println("Valid: " + i + " turns needed ");
+						tbBig.setToEmpty(posA_H, posA_W);
+						tbBig.setToEmpty(posB_H, posB_W);
+					}
+				}
+				System.out.print(tbBig);
+			} catch (InputMismatchException e) {
+				System.out.println("Input mismatch exception thrown");
+				keyboard.nextLine();
+				// so it's not stuck with same keyboard buffer
+			} catch (ArrayIndexOutOfBoundsException e) {
+				System.out.println("Array index out of bounds exception thrown");
+				//keyboard.nextLine();    not sure if needed
+			}
+			System.out.println("Exiting");
+//			quit = true; // will make game only run once
+		}
+		
 		
 		keyboard.close();
 	}
-
-
 
 
 }

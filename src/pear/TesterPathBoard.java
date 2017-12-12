@@ -1,7 +1,6 @@
 package pear;
 
 class TesterPathBoard extends TesterBoard{
-	private final int maxTurns = 3;   // max amount of turns allowed is set to 3
 	
 // constructor of empty board
 	protected TesterPathBoard(int h, int w) {
@@ -10,10 +9,6 @@ class TesterPathBoard extends TesterBoard{
 	
 	protected TesterPathBoard(int h, int w, int[][] b) {
 		super(h,w,b);
-	}
-	
-	protected int getMaxTurns() {
-		return maxTurns;
 	}
 	
 	
@@ -74,87 +69,91 @@ class TesterPathBoard extends TesterBoard{
 	
 // helper function for addTurns that will extend 1 UPwards until it 
 //   either hits the edge or runs into an occupied coordinate
-	protected void extendUP(int i, int j) {
-		System.out.print("^ @ " + i + " " + j);
+	protected void extendUP(int i, int j, int turnMarker) {
+//		System.out.print("^ @ " + i + " " + j);
 		int extend = 1;
 		boolean UP = true;
 		while (UP == true) {
 			if (i-extend >=0 && this.getValue(i-extend, j) == 0) {
-				this.setValue(i-extend, j, 2);
+				this.setValue(i-extend, j, turnMarker);
 				++extend;
-				System.out.print("1 up, ");
+//				System.out.print("1 up, ");
 			} else {
-				System.out.println(" false ^");
+//				System.out.println(" false ^");
 				UP=false;
 			}
 		}
+//		System.out.print(" up by " + (extend-1));
 		
 	}
 
 		
 // helper function for addTurns that will extend 1 DOWNwards until it 
 //  either hits the edge or runs into an occupied coordinate
-	protected void extendDOWN(int i, int j) {
-		System.out.print("downs @ " + i + " " + j);
+	protected void extendDOWN(int i, int j, int turnMarker) {
+//		System.out.print("downs @ " + i + " " + j);
 		int extend = 1;
 		int height = this.getHeight();
 		boolean DOWN = true;
 		while (DOWN == true) {
 			if (i+extend<height && this.getValue(i+extend, j) == 0) {
-				this.setValue(i+extend, j, 2);
+				this.setValue(i+extend, j, turnMarker);
 				++extend;
-				System.out.print(" 1 down, ");
+//				System.out.print(" 1 down, ");
 			} else {
-				System.out.println(" false DOWNS");
+//				System.out.println(" false DOWNS");
 				DOWN=false;
 			}
 		}
+//		System.out.print(" down by " + (extend-1));
 	}
 	
 	
 // helper function for addTurns that will extend 1 LEFTwards until it 
 //  either hits the edge or runs into an occupied coordinate
-	protected void extendLEFT(int i, int j) {
-		System.out.println("<- @ " + i + " " + j);
+	protected void extendLEFT(int i, int j, int turnMarker) {
+//		System.out.println("<- @ " + i + " " + j);
 		int extend = 1;
 		boolean LEFT = true;
 		while (LEFT == true) {
 			if (j-extend >=0 && this.getValue(i, j-extend) == 0) {
-				this.setValue(i, j-extend, 2);
+				this.setValue(i, j-extend, turnMarker);
 				++extend;
-				System.out.print("1 left, ");
+//				System.out.print("1 left, ");
 			} else {
 				LEFT=false;
-				System.out.println("false <-");
+//				System.out.println("false <-");
 			}
 		}
+//		System.out.print(" left by " + (extend-1));
 		
 	}
 	
 	
 // helper function for addTurns that will extend 1 RIGHTwards until it 
 //  either hits the edge or runs into an occupied coordinate
-	protected void extendRIGHT(int i, int j) {
-		System.out.print("-> @ " + i + " "+ j);
+	protected void extendRIGHT(int i, int j, int turnMarker) {
+//		System.out.print("-> @ " + i + " "+ j);
 		int extend = 1;
 		int width = this.getWidth();
 		boolean RIGHT = true;
 		while (RIGHT == true) {
 			if (j+extend < width && this.getValue(i, j+extend) == 0) {
-				this.setValue(i, j+extend, 2);
-				System.out.print(" 1 right, ");
+				this.setValue(i, j+extend, turnMarker);
+//				System.out.print(" 1 right, ");
 				++extend;
 			} else {
 				RIGHT=false;
-				System.out.println("false ->");
+//				System.out.println("false ->");
 			}
 		}
+//		System.out.print(" right by " + (extend-1));
 	}
 	
 	
 // helper function for minTurns that will take **ALL** existing 1's 
 // and replace touching 0's sharing the same x or y value to a 1
-	protected void addTurn() {
+	protected void addTurn(int turnMarker) {
 		int height = this.getHeight();
 		int width = this.getWidth();
 //		int extend;
@@ -162,26 +161,28 @@ class TesterPathBoard extends TesterBoard{
 //		boolean UP, DOWN, LEFT, RIGHT;
 		for (i=0; i<height; i++) {
 			for (j=0; j<width; j++) {
-				if (this.getValue(i, j) == 1) {
-					
+				if (this.getValue(i, j) == turnMarker) {
+//					System.out.println("extend " + turnMarker + " at " + i + " " + j);
 					// extend 1 up/down/left/right until it hits edge or -1
-					// might look cleaner to make method to do so but feels excessive..?
-					
-					this.extendUP(i,j);
-					this.extendDOWN(i,j);
-					this.extendLEFT(i,j);
-					this.extendRIGHT(i,j);
-									
+					// DO NOT INCREMENT TURNMARKER UNTIL ENTIRE BOARD HAS BEEN GONE THRU
+					// OR ELSE REST OF BOARD WILL LOOK FOR DIFFERNT VALUE AND INCREMENT *THAT*
+//					System.out.println(turnMarker);
+					this.extendUP(i,j, turnMarker+1);
+					this.extendDOWN(i,j, turnMarker+1);
+					this.extendLEFT(i,j, turnMarker+1);
+					this.extendRIGHT(i,j, turnMarker+1);	
+//					System.out.println(" done extending");
 				}
 			}
 		}
-		for (i=0; i<height; i++) {
+/*		for (i=0; i<height; i++) {
 			for (j=0; j<width; j++) {
 				if (this.getValue(i, j)>1) {
 					this.setValue(i, j, 1);
 				}
 			}
 		}
+*/
 	}
 
 }

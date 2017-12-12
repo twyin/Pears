@@ -71,7 +71,7 @@ class TesterBoard {
 		
 		// for personal esthetics
 		// precise formula: (width*3+4 - " Board ".length()) in half, then + " Board ".length()
-		String drawBoard = String.format("%"+ ((w*3-1)/2+5) +"s", 
+		String drawBoard = String.format("%"+ ((w*3-3)/2+7) + "s", 
 				"xBoardx").replace(' ', '=');
 		drawBoard = String.format("%-" + (w*3+4) + "s\n", 
 				drawBoard).replace(' ', '=').replace('x',' ');
