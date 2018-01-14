@@ -209,6 +209,20 @@ import java.util.Scanner;
 // protected
 class PearTester{
 	
+	private static void createAndShowGUI() {
+		// create and set up the window
+		JFrame frame = new JFrame("HelloWorldSwing");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		// add the ubiquitous "Hello World" label
+		JLabel label = new JLabel("Hello World");
+		frame.getContentPane().add(label);
+		
+		// display the window
+		frame.pack();
+		frame.setVisible(true);;
+	}
+	
 
 	public static void main(String[] args) {
 		
@@ -294,11 +308,11 @@ class PearTester{
 				//keyboard.nextLine();    not sure if needed
 			}
 			System.out.println("Exiting");
-//			quit = true; // will make game only run once
+			quit = true; // will make game only run once
 		}
 		
-		
 		keyboard.close();
+		
 	}
 
 
