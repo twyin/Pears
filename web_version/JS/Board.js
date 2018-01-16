@@ -49,24 +49,30 @@ class Board {
   
 // ============================================================================
 // ============================================================================
-  
+
   
 // ============================================================================
 // ============================================================================
-  toString() {
+  toString() { 
     let h = this.height;
     let w = this.width; 
-    let numLeft = (w*3-3)/2+7;
-    let numRight = w*3+4;
-    let finalHeader = '='.repeat(numLeft) + ' Board ' + '='.repeat(numRight);
+    let headerLength = w*3+4;
+    let boardName = this.constructor.name; // string
+    let leftPadding = Math.floor((headerLength - boardName.length - 2)/2);
+    let rightPadding = Math.ceil((headerLength - boardName.length - 2)/2);
+    
+    //let numLeft = (w*3-3)/2+7;
+    //let numRight = w*3+4;
+    let finalHeader = '='.repeat(leftPadding) + ' ' + boardName + 
+                      ' ' + '='.repeat(rightPadding);
     
     let drawBoard = '';
     for (let i=0; i<h; i++) {
-      drawBoard += "[ ";
+      drawBoard += "[";
       for (let j=0; j<w; j++) {
-        drawBoard += this.board[i][j].toString().padStart(2);
+        drawBoard += this.board[i][j].toString().padStart(3);
       }
-      drawBoard+=" ]\n";
+      drawBoard+="  ]\n";
     }
     return finalHeader + '\n' + drawBoard;
   }
@@ -74,12 +80,3 @@ class Board {
 // ============================================================================
   
 }
-
-let justinsBoard = new Board(3, 4);
-for (let i = 0; i < 3; i++) {
-  for (let j = 0; j < 4; j++) {
-    justinsBoard.setToZero(i, j);
-  }
-}
-console.log(justinsBoard.toString());
-

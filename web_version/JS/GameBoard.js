@@ -1,19 +1,24 @@
-
 class GameBoard extends Board {
-	const maxTurns = 3;   // max amount of turns allowed is set to 3
-	// new instance variables: int patterns, int unsolved pairs, int[] obstacles
+	// max amount of turns allowed is set to 3
+	static get maxTurns() {
+		return 3;
+	}
+
 
 // constructor of gameboard
-	constructor GameBoard(h, w, p, ob) {
+	constructor(h, w, p, ob) {
 		super(h, w);
 		this.patterns = p;                          // amount of patterns
 		this.unsolvedPairs = h*w/2 - ob.length;     // number of unsolved pairs left
 		this.obstacles = ob;                        // relative position of each obstacle
+		for (let i=0; i<ob.length; i++) {
+		  super.setValue(Math.floor(ob[i]/w), ob[i]%w, -1);
+		}
 	}
 	
 // getter's
 	getMaxTurns() {
-		return maxTurns;
+		return this.maxTurns;
 	}
 	
 	getPatterns() {
@@ -24,7 +29,7 @@ class GameBoard extends Board {
 		return this.unsolvedPairs;
 	}
 	
-/* Obstacles is the "linear" INDEX at which they which
+/* Obstacles is the "linear" INDEX at which they occur
  * For example, if desired obstacle is like:
  *   [ 0 0 -1 ]
  *   [ 0 0 -1 ]
@@ -47,42 +52,23 @@ class GameBoard extends Board {
 	
 // setObstalces() has been removed
 	
-// toString
-	toString() {
-		let h = Board.getHeight();
-		let w = Board.getWidth();
-
-		let numLeft = (w*3-7)/2+11;
-		let numRight = w*3+4;
-		let finalHeader = '='.repeat(numLeft) + ' GameBoard ' + '='.repeat(numRight);
-		
-		let drawBoard = '';
-		for (let i=0; i<h; i++) {
-			drawBoard += ("[ ");
-			for (let j=0; j<w; j++) {
-				drawBoard += this.board[i][i].toString().padStart(2);
-			}
-			drawBoard+=" ]\n";
-		}
-		return finalHeader + '\n' + drawBoard;
-	}
+// removed toString since it is in parent Board class
+//   and does (almost) the same thing
 
 // removed fill-1 as it is slower than fill-2; no need to have both
 
 // ============================================================================
 // ============================================================================
 /* fill-2 that can handle obstacles
- * Logically it's still the same as before, visual example of new fill-2
- *   given obstacles[] = {2,4,6} on a 3x3 board
+ * Visual example of fill-2
+ *   given obstacles[] = [2,4,6] on a 3x3 board
  *   [ 0 0 -1 ]
- *   [ 0 0 -1 ] + obstacles={2,4,6}  --> {0,0,-1,0,0,-1,0,0,-1}
+ *   [ 0 0 -1 ] + obstacles={2,4,6}  --> [0,0,-1,0,0,-1,0,0,-1]
  *   [ 0 0 -1 ]
- *   create array same size as empty spaces; so boardArray[6]
  *   for every obstacle, put -1 in boardArray where it should go,
- *   which would be boardArray[2], [4], and [6] for the above example
- *   put a pattern in boardArry[i] based on j; what they are is 
- *   explained where they are declared below
- *   j/2%patterns+1 explained : "+ 1" is so that the patterns would 
+ *   which would be boardArray[2], [4], and [6] in this example.
+ *   put a pattern in boardArry[i] based on j, reason for using
+ *   (j/2%patterns+1) explained : "+ 1" is so that the patterns would 
  *   start at 1 and not 0
  *   AS LONG AS THE AMOUNT OF EMPTY SPACES ON BOARD IS EVEN,
  *   this formula also assures that they would appear in pairs!
@@ -98,31 +84,32 @@ class GameBoard extends Board {
  *   
  */
 
- fill2() {
-		let h = getHeight();
-		let w = getWidth();
+ fill() {
+		let h = super.getHeight();
+		let w = super.getWidth();
 		let total = h*w;
-		let boardArray = new Array[total];
+		let boardArray = new Array(total);
 		
-		let j=0;             // counts the empty spaces in boardArray
+		let i;
+		let j = 0;             // counter that excluds empty spaces in boardArray
 		let pos;
 		let temp;
 		let swapped;
 		
 		// JS GameBoard constructor requires obstacles[] to be 
 		//   entered, therefore it must have an existing length
-		let obsLen = obstacles.length; 
+		let obsLen = this.obstacles.length; 
 		
-		for (let i=0; i<obsLen; i++) {
+		for (i=0; i<obsLen; i++) {
 		// obstacles holds the indexes in boardArray that will be -1
-			boardArray[obstacles[i]] = -1;
+			boardArray[this.obstacles[i]] = -1;
 		}
 		
-		for (let i=0; i<total; i++) {
+		for (i=0; i<total; i++) {
 		// reason for two counters, j to go down boardArray, j to count
 		//   empty spaces. This is so no new value is assigned to obstacle
 			if (boardArray[i] != -1) {
-				boardArray[i] = j/2%this.patterns+1;
+				boardArray[i] = Math.floor(j/2)%this.patterns+1;
 				j++;
 			}
 		}
@@ -132,8 +119,8 @@ class GameBoard extends Board {
 			// swap boardArray[counter] and [pos]
 			swapped=false;
 			if (boardArray[i]!=-1) {
-				while (swapped==false) {
-					pos = Math.floor(Math.random()*total)  // generate 0-19 if total=20
+				while (swapped===false) {
+					pos = Math.floor(Math.random()*total);  // generate 0-19 if total=20
 					if (boardArray[pos]!=-1) {
 						temp = boardArray[i];
 						boardArray[i] = boardArray[pos];
@@ -146,7 +133,7 @@ class GameBoard extends Board {
 		
 		for (let i=0; i<h; i++) {
 			for (let j=0; j<w; j++) {
-				setValue(i, j, boardArray[i*w+j]);
+				super.setValue(i, j, boardArray[i*w+j]);
 			}
 		}
 	}
@@ -175,27 +162,27 @@ class GameBoard extends Board {
 				// swap with a random if neither are obstacles, else
 				//   pick another place to swap the original with
 				
-				if (getValue(i,j) != -1) {
+				if (super.getValue(i,j) != -1) {
 //					if (board[i][j]!=-1) {
 				//if (board[i][j]>0) {
 				// ^ switch to this if condition if shuffle must keep
 				//  the "shape" of occupied spaces!
 				// with (board[i][j]!=-1), shuffle is allowed to swap
 				// patterns with 0's
-					while (swapped==false) {
+					while (swapped===false) {
 						posW = Math.floor(Math.random() * w);
 						posH = Math.floor(Math.random() * h)
 						
-						if (getValue(posH, posW) != -1) {
+						if (super.getValue(posH, posW) != -1) {
 //								if (board[posH][posW]!= -1 ) {
 						//if (board[posH][posW] > 0 ) {
 						// ^ switch to this if condition if shuffle must keep
 						//  the "shape" of occupied spaces
-							temp = getValue(i, j);
+							temp = super.getValue(i, j);
 //									temp = board[i][j];
-							setValue(i, j, getValue(posH, posW));
+							super.setValue(i, j, super.getValue(posH, posW));
 //									board[i][j] = board[posH][posW];
-							setValue(posH, posW, temp);
+							super.setValue(posH, posW, temp);
 //									board[posH][posW] = temp;
 							swapped=true;
 						}
@@ -208,6 +195,8 @@ class GameBoard extends Board {
 	}
 // ============================================================================
 // ============================================================================
+
+		
 
 		
 
@@ -247,7 +236,7 @@ class GameBoard extends Board {
 		
 		let turnMarker = 1;  
 		// turnMarker marks turns reachable within 0 turn with 1, 1 turn with 2, etc
-		let maxT = this.getMaxTurns();
+		let maxT = this.maxTurns;
 // remove comment indicator when addTurn() works properly;
 // SHOULD be able to actual minimum of turns needed
 		while (found==false && addedTurns <= maxT) {
@@ -256,7 +245,7 @@ class GameBoard extends Board {
 //
 			//System.out.println("With " + addedTurns + " turns");
 			//System.out.println(pb);
-			if (pb.getValue(y2+1, x2+1) > 0 ) {
+			if (pb.(super.getValue(y2+1, x2+1)) > 0 ) {
 				found=true;
 			} else {
 				++addedTurns;
@@ -272,3 +261,30 @@ class GameBoard extends Board {
 	
 	}
 }
+
+
+/////////////////// Testing ///////////////////////
+/*
+
+let justinsBoard = new Board(3, 5);
+for (let i = 0; i < 3; i++) {
+  for (let j = 0; j < 5; j++) {
+    justinsBoard.setToZero(i, j);
+  }
+}
+console.log(justinsBoard.toString());
+
+let gb1 = new GameBoard(5,7,4,[4,6,13,20]);
+for (let i = 0; i < 5; i++) {
+  for (let j = 0; j < 7; j++) {
+    if (gb1.getValue(i,j)!=-1) {
+      gb1.setToZero(i, j);  
+    }
+  }
+}
+
+gb1.fill();
+
+console.log(gb1.toString());
+
+*/
