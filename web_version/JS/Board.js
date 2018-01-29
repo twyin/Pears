@@ -70,7 +70,12 @@ class Board {
     for (let i=0; i<h; i++) {
       drawBoard += "[";
       for (let j=0; j<w; j++) {
-        drawBoard += this.board[i][j].toString().padStart(3);
+        if (this.board[i][j]==null) {
+          //System.out.print("null");
+          drawBoard += 'n'.padStart(3);
+        } else {
+          drawBoard += this.board[i][j].toString().padStart(3);
+        }
       }
       drawBoard+="  ]\n";
     }
@@ -80,3 +85,6 @@ class Board {
 // ============================================================================
   
 }
+
+let x = 3+3;
+
