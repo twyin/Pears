@@ -10,70 +10,162 @@
 -->
 
 <html lang = "en-US">
-  <head>
-    <title>Pears</title>
+<head>
+  <title>Pears</title>
 
-    <meta charset = "UTF-8">
+  <meta charset = "UTF-8">
 
-    <script src="web_version/JS/Board.js"></script>
-    <script src="web_version/JS/GameBoard.js"></script>
-    <script src="web_version/JS/PathBoard.js"></script>
-    <script src="web_version/JS/Pears.js"></script>
-    <script>Pears.main();</script>
+  <script src="web_version/JS/Board.js"></script>
+  <script src="web_version/JS/GameBoard.js"></script>
+  <script src="web_version/JS/PathsBoard.js"></script>
+  <script src="web_version/JS/Pears.js"></script>
+  <script src="web_version/JS/PLevel.js"></script>
 
-    <style>
-    body {
-      background-color: #ffc1cf;
-      color: #ffffff;
-    }
+  <!-- <script>Pears.drawBoard();</script> -->
 
-    pre.title {
-      font-size: 25px;
-      text-shadow: 0.5px 0.5px #00194f;
-    }
 
-    table.board{
-    width: 40%;
-    border-spacing: 10px;
+
+
+
+
+
+  <style>
+
+  body {
+    background-color: #ffc1cf;
+    color: #ffffff;
+    margin: 0px 10px 10px 20px;
+  }
+
+  pre.title {
+    font-size: 25px;
+    text-shadow: 0.5px 0.5px #00194f;
+  }
+
+  table.board{
+  width: 70%;
+  border-spacing: 10px;
+  border-collapse: collapse;
+  border: #ffffff solid thin;
+  font-style: "Courier New", Courier, monospace
+  font-size: 15px;
+
+  border-width: 1px;
+  }
+
+  th.board {
+    font-style: "Courier New", Courier, monospace
+    padding: 10px;
+    border: 1px #ffb2c1 solid;
+    border-style: dashed;
+    color: #ffffff;
+
+    border-width: 1px;
+  }
+
+  td.board {
+    text-align: center;
+    font-style: "Courier New", Courier, monospace
+
+    border: 10px #ffffff thin;
     border-collapse: collapse;
-    border: #ffffff solid thin;
-    font-style: "Courier New", monospace;
-    font-size: 15px;
-    }
+    border-style: dashed;
 
-    th {
-      font-style: "Courier New", monospace;
-      padding: 10px;
-      border: 1px #ffffff solid;
-      border-style: dashed;
-      color: #ffffff;
-    }
+    border-width: 1px;
+  }
 
-    </style>
+  tr.board {
+    text-align: center;
+    font-style: "Courier New", Courier, monospace
 
-  </head>
+    border: 1px #ffffff thin;
+    border-collapse: collapse;
+    border-style: dashed;
+
+    border-width: 1px;
+  }
+
+  </style>
+</head>
   
-  <body>
-    <pre class="title">Hello World &hearts;</pre>
+<body id="mainPage">
+  <pre class="title">Hello World &hearts;</pre>
 
-    <table class="board">
-      <tr>
-        <th>0,0</th>
-        <th>0,1</th>
-        <th>0,2</th>
-      </tr>
-      <tr>
-        <th>1,0</th>
-        <th>1,1</th>
-        <th>1,2</th>
-      </tr>
-      <tr>
-        <th>2,0</th>
-        <th>2,1</th>
-        <th>2,2</th>
-      </tr>
-    </table>
+  <button>Testing 123</button>
+
+ <!--  <table class="board" id="playerBoard">
+
+  </table> -->
 
 
-  </body>
+</body>
 </html>
+
+
+
+<script>
+
+//  let level1 = new PLevel(7, 10, 7, null, null);
+
+
+  var height = level1.gboard.getHeight();
+  var width = level1.gboard.getWidth();
+
+
+  function drawBoard() {
+    //var body = document.getElementsByTagName('body')[0];
+
+    var game = document.createElement("table");
+    game.setAttribute("class", "board");
+
+    var board = document.createElement('tbody');
+
+    for (var i=0; i<height; i++) {
+      var row = document.createElement("tr");
+      row.setAttribute("class","board");
+
+      for (var j=0; j<width; j++) {
+        var td = document.createElement('td');
+        td.setAttribute("class", "board");
+        td.style.padding="5px";
+
+        var id = (i+"."+j);
+        td.setAttribute("id",id);
+
+        var rowElement = document.createTextNode(id + ": " + level1.gboard.getValue(i,j));
+
+        
+
+        td.appendChild(rowElement);
+        row.appendChild(td);
+      }
+      board.appendChild(row);
+      
+    }
+
+    game.appendChild(board);
+   
+    document.body.appendChild(game);
+
+
+  }
+
+  drawBoard();
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
