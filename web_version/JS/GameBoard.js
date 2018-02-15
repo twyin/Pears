@@ -1,7 +1,8 @@
 class GameBoard extends Board {
     // max amount of turns allowed is set to 3
     static get maxTurns() {
-        return 3;
+        const max = 3;
+        return max;
     }
 
 
@@ -26,9 +27,6 @@ class GameBoard extends Board {
     }
     
 // getter's
-    getMaxTurns() {
-        return this.maxTurns;
-    }
     
     getPatterns() {
         return this.patterns;
@@ -218,6 +216,9 @@ class GameBoard extends Board {
 // minTurns should be a method of GameBoard that return minimum
 //   number of turns from A(y1,x1) to A'(y2,x2)
     minTurns(y1, x1, y2, x2) {
+        console.log("min turns between y1 x1 y2 x2: " + y1+" "+x1+" "+y2+" "+x2);
+
+
         // (y1,x1) is A, (y2,x2) is A'
         let height = this.getHeight() + 2;
         let width = this.getWidth() + 2;
@@ -232,16 +233,22 @@ class GameBoard extends Board {
 
 
         let pb = new PathsBoard(height, width); 
+//        console.log(pb.toString());
         
-        for (let i = 0; i < this.getHeight(); i++) {
-          for (let j = 0; j < this.getWidth(); j++) {
+        for (let i = 0; i < height; i++) {
+          for (let j = 0; j < width; j++) {
             pb.setToZero(i, j);
           }
         }
         
+
+        
         
         
         pb.pave(this, y1, x1, y2, x2);
+//        console.log(pb.toString());
+
+
         
         
         // shouldn't have anything other than -1/0/1's on it so 
@@ -263,12 +270,15 @@ class GameBoard extends Board {
         
         let turnMarker = 1;  
         // turnMarker marks turns reachable within 0 turn with 1, 1 turn with 2, etc
-        let maxT = this.maxTurns;
+        let maxT = GameBoard.maxTurns;
+
+
 // remove comment indicator when addTurn() works properly;
 // SHOULD be able to actual minimum of turns needed
-        while (found==false && addedTurns <= maxT) {
-//          System.out.println("turnMarker = " + turnMarker);
+        while ((found==false) && (addedTurns <= maxT)) {
+            //console.log("turnMarker = " + turnMarker);
             pb.addTurn(turnMarker);
+//            console.log(pb.toString());
 //
             //System.out.println("With " + addedTurns + " turns");
             //System.out.println(pb);

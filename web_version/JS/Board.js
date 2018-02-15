@@ -5,7 +5,7 @@ class Board {
     this.width = w;
     this.board = []; // value at each [i][j] is undefined
     for (let i=0; i<h; i++) {
-        this.board.push(new Array(w));
+        this.board.push(new Array(w)); //undefined
     }
   }
   
@@ -86,5 +86,4 @@ class Board {
   
 }
 
-let x = 3+3;
 

@@ -21,7 +21,7 @@
   <script src="web_version/JS/Pears.js"></script>
   <script src="web_version/JS/PLevel.js"></script>
 
-  <!-- <script>Pears.drawBoard();</script> -->
+  <!--  <script>GameBoard.minTurns();</script>  -->
 
 
 
@@ -35,6 +35,20 @@
     background-color: #ffc1cf;
     color: #ffffff;
     margin: 0px 10px 10px 20px;
+  }
+
+  button {
+    background-color: Transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+  }
+
+  button:active {
+    color: red;
+    background-color: #ffffff;
   }
 
   pre.title {
@@ -53,14 +67,10 @@
   border-width: 1px;
   }
 
-  th.board {
-    font-style: "Courier New", Courier, monospace
-    padding: 10px;
-    border: 1px #ffb2c1 solid;
-    border-style: dashed;
-    color: #ffffff;
+  td {
+    height: 15px;
+    width: 15px;
 
-    border-width: 1px;
   }
 
   td.board {
@@ -74,15 +84,53 @@
     border-width: 1px;
   }
 
+  td.remove {
+    text-align: center;
+    font-style: "Courier New", Courier, monospace
+
+    border: 10px #ffffff thin;
+    border-color: #ffffff;
+    border-collapse: collapse;
+    border-style: none;
+
+    border-width: 1px;
+
+    color: #ffc1cf;
+  }
+
+
+
+  td.board:hover {
+    color: red;
+    background-color: #ffffff;
+    cursor: pointer;
+  }
+
+
+
+  th.board {
+    font-style: "Courier New", Courier, monospace
+    padding: 10px;
+    border: 1px #ffb2c1 solid;
+    border-style: dashed;
+    color: #ffffff;
+
+    border-width: 1px;
+  }
+
+
+
   tr.board {
     text-align: center;
     font-style: "Courier New", Courier, monospace
 
     border: 1px #ffffff thin;
     border-collapse: collapse;
-    border-style: dashed;
+    /*border-style: dashed;*/
 
     border-width: 1px;
+
+    height: 15px;
   }
 
   </style>
@@ -90,8 +138,6 @@
   
 <body id="mainPage">
   <pre class="title">Hello World &hearts;</pre>
-
-  <button>Testing 123</button>
 
  <!--  <table class="board" id="playerBoard">
 
@@ -106,10 +152,12 @@
 <script>
 
 //  let level1 = new PLevel(7, 10, 7, null, null);
+  var currLevel = level1;
+  var currGB = currLevel.gboard;
 
 
-  var height = level1.gboard.getHeight();
-  var width = level1.gboard.getWidth();
+  var height = currLevel.gboard.getHeight();
+  var width = currLevel.gboard.getWidth();
 
 
   function drawBoard() {
@@ -125,19 +173,54 @@
       row.setAttribute("class","board");
 
       for (var j=0; j<width; j++) {
+
+        // create row square
+
         var td = document.createElement('td');
         td.setAttribute("class", "board");
         td.style.padding="5px";
 
-        var id = (i+"."+j);
+        var id = (i+"_"+j);
         td.setAttribute("id",id);
 
-        var rowElement = document.createTextNode(id + ": " + level1.gboard.getValue(i,j));
+        var rowElement = document.createTextNode(currLevel.gboard.getValue(i,j));
 
-        
+
+        // create button
+// BUTTON MAY BE UNNECESSARY SINCE THE TABLE ELEMENTS CAN BE CLICKED ON!
+        //var btn = document.createElement('button');
+        //var rowButton = document.createTextNode(currLevel.gboard.getValue(i,j));
+// ============ ultimately useless buttons
+
+        //btn.addEventListener('click', addClick(i,j), false);
+        //btn.setAttribute("onclick", addClick(i,j));
+        //rowButton.outerHTML = "<input type=\"button\" onclick=\"addClick(`i`,`j`)\"";
+
+        //btn.setAttribute("onclick", `addClick(${i},${j})`); // i=y coord, j=x coord
+        td.setAttribute("onclick", `addClick(${i},${j})`);
+
+
+
+
+
+
+// button related
+        //btn.appendChild(rowButton);
+        // add button to row element
+        //td.appendChild(btn);
+// button
+
+
+
+
+        //addClick(i,j);
+
+        //rowElement.addEventListener('click', addClick(i,j), false);
+
 
         td.appendChild(rowElement);
         row.appendChild(td);
+
       }
       board.appendChild(row);
       
@@ -147,20 +230,84 @@
    
     document.body.appendChild(game);
 
+    //btn.addEventListener('click', addClick(i,j), false);
+
 
   }
 
   drawBoard();
 
 
+
+  //var x1=null, y1=null, x2=null, y2=null; //(x1, y1) = coord of click 1, (x2, y2) = coord of click 2
+  var x1=null, y1=null;
+
+  function addClick(i,j) {
+    if (x1==null && y1==null) {
+      y1 = i;
+      x1 = j;
+
+      console.log("yx: " + y1+","+x1);
+    } else {
+      console.log("ji: " + i+","+j);
+
+      //match(++y1, ++x1, ++y2, ++x2);  //accomodate paths
+
+      if (x1!=j || y1!=i) {
+        match(y1, x1, i, j);
+      }
+      x1=null;
+      y1=null;
+
+    }
+
+  }
+
+  function match(y1, x1, y2, x2) {
+    console.log("y1 x1 y2 x2: " + y1+" "+x1+" "+y2+" "+x2);
+
+    //    console.log("To quit, enter -1");
+//    console.log("Please enter coordinate separated by a space");
+    let intA; // int
+    let intB; // int
+    let maxTurns = GameBoard.maxTurns; // int, should be 3
+
+
+    intA = currGB.getValue(y1, x1);
+
+    intB = currGB.getValue(y2, x2);
+    
+    if (intA!=intB) {
+      console.log("Invalid pear");
+    } else {
+
+      var i = currGB.minTurns(y1, x1, y2, x2);
+      console.log("minTurns: " + i);
+     
+      if (i > maxTurns) {
+        console.log("Invalid: must be within " + maxTurns + " turns");
+      } else {
+        // valid number of turns
+        console.log("Valid: " + i + " turns needed ");
+        currGB.setToZero(y1, x1);
+        currGB.setToZero(y2, x2);
+        console.log(currGB.toString());
+
+        let element1 = document.getElementById(`${y1}_${x1}`);
+        element1.setAttribute("class", "remove");
+        element1.textContent = "";
+
+        let element2 = document.getElementById(`${y2}_${x2}`);
+        element2.setAttribute("class", "remove");
+        element2.textContent = "";
+      }
+    }
+
+  }
+
+
+
 </script>
-
-
-
-
-
-
-
 
 
 

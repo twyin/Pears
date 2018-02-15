@@ -1,8 +1,8 @@
 class PathsBoard extends Board{
     
 // constructor of empty board
-    constructor(h, w, b) {
-        super(h,w,b);
+    constructor(h, w, b) {     // feb 15: why is there a b here..
+        super(h,w, b);
     }
     
     
@@ -13,7 +13,8 @@ class PathsBoard extends Board{
 // method to make new board into pure path and non-path squares, in
 //   other words, everything besides 0's are non-path
 // GameBoard gb, int y1, int x1, int y2, int x2 -> return void
-    pave (gb, y1, x1, y2, x2) {
+// all values should be 0 at the time of call
+    pave (gb, y1, x1, y2, x2) { 
         let height = gb.getHeight();
         let width = gb.getWidth();
         
