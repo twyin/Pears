@@ -4,7 +4,7 @@
 <!-- https:/...-->
 
 <!-- Colours:
-  - red: light pink (#ffb2c1), bright red (#d10000), dark red (#75000b)
+  - red: light pink (#ffc1cf), bright red (#d10000), dark red (#75000b)
   - yellow: very light yellow (#fffdef)
   - blue: blue (#0081dd), navy (#00267a), dark blue (#00194f)
 -->
@@ -49,6 +49,28 @@
   button:active {
     color: red;
     background-color: #ffffff;
+  }
+
+  p.topScore {
+    position: fixed;
+    top: 0;
+    width: 20%;
+    background-color: #ffced9;
+    overflow: hidden;
+
+    padding:10px;
+
+  }
+
+  p.topTimer {
+    position: fixed;
+    top: 0;
+    width: 20%;
+    margin-left:160px;
+    background-color: #ffced9;
+    overflow: hidden;
+
+    padding: 10px;
   }
 
   pre.title {
@@ -137,6 +159,11 @@
 </head>
   
 <body id="mainPage">
+
+  <p class="topScore" id="score">Score: </p>
+  <p class="topTimer" id="timer">Timer: </p>
+
+  <br><br><br>
   <pre class="title">Hello World &hearts;</pre>
 
  <!--  <table class="board" id="playerBoard">
@@ -154,6 +181,9 @@
 //  let level1 = new PLevel(7, 10, 7, null, null);
   var currLevel = level1;
   var currGB = currLevel.gboard;
+
+
+document.getElementById("score").innerHTML = "Score: " + currGB.getUnsolvedPairs();
 
 
   var height = currLevel.gboard.getHeight();
@@ -300,7 +330,19 @@
         let element2 = document.getElementById(`${y2}_${x2}`);
         element2.setAttribute("class", "remove");
         element2.textContent = "";
+
+        updateScore();
       }
+    }
+
+  }
+
+
+  function updateScore() {
+    var pearsLeft = currGB.solvePair();
+    document.getElementById("score").innerHTML = "Score: " + pearsLeft;
+    if (pearsLeft == 0) {
+      alert("You've completed Level 1 !");
     }
 
   }

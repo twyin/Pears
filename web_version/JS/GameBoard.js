@@ -16,13 +16,17 @@ class GameBoard extends Board {
 *  number of unsolved pairs left will determine when to end the
 *  level/game. getUnsolvedPairs() commented out as well
 */
-//        this.unsolvedPairs = h*w/2 - ob.length;     // number of unsolved pairs left
+        
         this.obstacles = ob;                        // relative position of each obstacle
         if (ob!=null) {
             for (let i=0; i<ob.length; i++) {
                 super.setValue(Math.floor(ob[i]/w), ob[i]%w, -1);
             }
+            this.unsolvedPairs = h*w/2 - ob.length;     // number of unsolved pairs left
+        } else {
+            this.unsolvedPairs = h*w/2;
         }
+        
         
     }
     
@@ -32,9 +36,14 @@ class GameBoard extends Board {
         return this.patterns;
     }
     
-//    getUnsolvedPairs() {
-//       return this.unsolvedPairs;
-//    }
+    getUnsolvedPairs() {
+       return this.unsolvedPairs;
+    }
+
+    solvePair() {
+//        console.log("gb: " + ;
+        return --this.unsolvedPairs;
+    }
     
 /* Obstacles is the "linear" INDEX at which they occur
  * For example, if desired obstacle is like:
@@ -246,7 +255,7 @@ class GameBoard extends Board {
         
         
         pb.pave(this, y1, x1, y2, x2);
-//        console.log(pb.toString());
+ //       console.log(pb.toString());
 
 
         
@@ -271,6 +280,7 @@ class GameBoard extends Board {
         let turnMarker = 1;  
         // turnMarker marks turns reachable within 0 turn with 1, 1 turn with 2, etc
         let maxT = GameBoard.maxTurns;
+        //debugger;
 
 
 // remove comment indicator when addTurn() works properly;
@@ -278,8 +288,8 @@ class GameBoard extends Board {
         while ((found==false) && (addedTurns <= maxT)) {
             //console.log("turnMarker = " + turnMarker);
             pb.addTurn(turnMarker);
-//            console.log(pb.toString());
-//
+            console.log(pb.toString());
+
             //System.out.println("With " + addedTurns + " turns");
             //System.out.println(pb);
 // !!! yikes
