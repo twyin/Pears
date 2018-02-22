@@ -22,7 +22,7 @@ class GameBoard extends Board {
             for (let i=0; i<ob.length; i++) {
                 super.setValue(Math.floor(ob[i]/w), ob[i]%w, -1);
             }
-            this.unsolvedPairs = h*w/2 - ob.length;     // number of unsolved pairs left
+            this.unsolvedPairs = (h*w - ob.length)/2;     // number of unsolved pairs left
         } else {
             this.unsolvedPairs = h*w/2;
         }
@@ -112,21 +112,23 @@ class GameBoard extends Board {
         let temp;
         let swapped;
 
-        var obsLen;
+        let obsLen=0;
         
         // JS GameBoard constructor requires obstacles[] to be 
         //   entered, therefore it must have an existing length
         if (this.obstacles == null) {
-            obsLen=0;
+            obsLen = 0;
         } else {
-            let obsLen = this.obstacles.length;
+            obsLen = this.obstacles.length;
         }
         
         for (i=0; i<obsLen; i++) {
         // obstacles holds the indexes in boardArray that will be -1
             boardArray[this.obstacles[i]] = -1;
         }
+
         
+
         for (i=0; i<total; i++) {
         // reason for two counters, j to go down boardArray, j to count
         //   empty spaces. This is so no new value is assigned to obstacle

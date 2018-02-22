@@ -92,6 +92,8 @@
   td {
     height: 15px;
     width: 15px;
+    max-width: 15px;
+    min-width: 15px;
 
   }
 
@@ -104,6 +106,8 @@
     border-style: dashed;
 
     border-width: 1px;
+
+    height: 15;
   }
 
   td.remove {
@@ -118,8 +122,28 @@
     border-width: 1px;
 
     color: #ffc1cf;
+
+    height: 15px;
+    width: 15px;
   }
 
+  td.obstacle {
+    text-align: center;
+    font-style: "Courier New", Courier, monospace
+
+    border: 10px #ffffff thin;
+    border-color: #ffffff;
+    border-collapse: collapse;
+    border-style: none;
+
+    border-width: 1px;
+
+    color: #ffc1cf;
+    background-color: #ffffff;
+
+    height: 15px;
+    width: 15px;
+  }
 
 
   td.board:hover {
@@ -128,6 +152,10 @@
     cursor: pointer;
   }
 
+  td.obstacle:hover {
+    color: #ffffff;
+    background-color: #ffffff;
+  }
 
 
   th.board {
@@ -164,11 +192,12 @@
   <p class="topTimer" id="timer">Timer: </p>
 
   <br><br><br>
-  <pre class="title">Hello World &hearts;</pre>
+  <pre class="title">Hello Pears &hearts;</pre>
 
  <!--  <table class="board" id="playerBoard">
 
   </table> -->
+
 
 
 </body>
@@ -178,16 +207,44 @@
 
 <script>
 
-//  let level1 = new PLevel(7, 10, 7, null, null);
-  var currLevel = level1;
-  var currGB = currLevel.gboard;
+
+  levelCounter = -1;
+  //var currLevel = game[levelCounter];
+  //var currGB = currLevel.gboard;
+
+  var currLevel;
+  var currGB;
+  var height, width;
+
+  newLevel();
 
 
-document.getElementById("score").innerHTML = "Score: " + currGB.getUnsolvedPairs();
+//document.getElementById("score").innerHTML = "Score: " + currGB.getUnsolvedPairs();
 
 
-  var height = currLevel.gboard.getHeight();
-  var width = currLevel.gboard.getWidth();
+  //var height = currLevel.gboard.getHeight();
+  //var width = currLevel.gboard.getWidth();
+
+  function newLevel() {
+    // clear current table
+    var tables = document.getElementsByTagName('table');
+    while (tables.length>0) {
+      tables[0].parentNode.removeChild(tables[0]);
+    }
+
+
+
+    levelCounter++;
+    currLevel = game[levelCounter];
+    currGB = currLevel.gboard;
+
+    document.getElementById("score").innerHTML = "Score: " + currGB.getUnsolvedPairs();
+
+    height = currLevel.gboard.getHeight();
+    width = currLevel.gboard.getWidth();
+    drawBoard();
+
+  }
 
 
   function drawBoard() {
@@ -227,7 +284,15 @@ document.getElementById("score").innerHTML = "Score: " + currGB.getUnsolvedPairs
         //rowButton.outerHTML = "<input type=\"button\" onclick=\"addClick(`i`,`j`)\"";
 
         //btn.setAttribute("onclick", `addClick(${i},${j})`); // i=y coord, j=x coord
-        td.setAttribute("onclick", `addClick(${i},${j})`);
+
+        if (currLevel.gboard.getValue(i,j) == -1) {
+          td.setAttribute("class", "obstacle");
+          // maybe setting to x is unnecessary
+          rowElement = document.createTextNode("X");
+        } else {
+          td.setAttribute("onclick", `addClick(${i},${j})`);
+        }
+        
 
 
 
@@ -265,7 +330,7 @@ document.getElementById("score").innerHTML = "Score: " + currGB.getUnsolvedPairs
 
   }
 
-  drawBoard();
+  //drawBoard();
 
 
 
@@ -325,11 +390,11 @@ document.getElementById("score").innerHTML = "Score: " + currGB.getUnsolvedPairs
 
         let element1 = document.getElementById(`${y1}_${x1}`);
         element1.setAttribute("class", "remove");
-        element1.textContent = "";
+        //element1.textContent = "";
 
         let element2 = document.getElementById(`${y2}_${x2}`);
         element2.setAttribute("class", "remove");
-        element2.textContent = "";
+        //element2.textContent = "";
 
         updateScore();
       }
@@ -343,10 +408,12 @@ document.getElementById("score").innerHTML = "Score: " + currGB.getUnsolvedPairs
     document.getElementById("score").innerHTML = "Score: " + pearsLeft;
     if (pearsLeft == 0) {
       alert("You've completed Level 1 !");
+      newLevel();
     }
 
   }
 
+  
 
 
 </script>
