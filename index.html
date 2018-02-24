@@ -3,8 +3,8 @@
 <!-- Ting Yin. Created on... Updated on... -->
 <!-- https:/...-->
 
-<!-- Colours:
-  - red: light pink (#ffc1cf), bright red (#d10000), dark red (#75000b)
+<!-- Colours: (very pretty light red but not used #ffb2bf)
+  - red: lighest pink (#ffced9), light pink (#ffc1cf), bright red (#d10000), dark red (#75000b)
   - yellow: very light yellow (#fffdef)
   - blue: blue (#0081dd), navy (#00267a), dark blue (#00194f)
 -->
@@ -30,6 +30,11 @@
 
 
   <style>
+
+  :root {
+  	--cell-size: 30px;
+  	--emphasis--color: #efa2b4;
+  }
 
   body {
     background-color: #ffc1cf;
@@ -78,109 +83,136 @@
     text-shadow: 0.5px 0.5px #00194f;
   }
 
-  table.board{
-  width: 70%;
-  border-spacing: 10px;
-  border-collapse: collapse;
-  border: #ffffff solid thin;
-  font-style: "Courier New", Courier, monospace
-  font-size: 15px;
+  div.board{
+    /*width: 100%;*/
+    /*border-spacing: 10px;*/
+    border-collapse: collapse;
+    border: #ffffff solid thin;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 16px;
 
-  border-width: 1px;
+    border-width: 1px;
+
+    margin-right: 15px;
+
+/*    max-width: 700px;*/
+
+    /*disable selection*/
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Chrome, Safari, Opera */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+         -o-user-select: none;
+            user-select: none;
+    display: inline-flex;
+    flex-direction: column;
+    flex-content: space-around;
+
+
+
   }
 
-  td {
-    height: 15px;
-    width: 15px;
-    max-width: 15px;
-    min-width: 15px;
+  div.cell {
+    height: var(--cell-size);
+    width: var(--cell-size);
+
+    min-width: var(--cell-size);
+    min-height: var(--cell-size);
+    max-width: var(--cell-size);
+    max-height: var(--cell-size);
+
+    padding: 5px;
+    /*border-collapse: collapse;*/
+    border-width: 1px;
+    border-radius: 12px;
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    margin: 5px 5px 5px 5px;
+
 
   }
 
-  td.board {
-    text-align: center;
-    font-style: "Courier New", Courier, monospace
 
+  div.cell.cell--board {
     border: 10px #ffffff thin;
     border-collapse: collapse;
     border-style: dashed;
+    
 
-    border-width: 1px;
 
-    height: 15;
+    
   }
 
-  td.remove {
+  div.cell.cell--remove {
     text-align: center;
-    font-style: "Courier New", Courier, monospace
-
-    border: 10px #ffffff thin;
+  /*  border: 10px #ffffff thin;*/
     border-color: #ffffff;
     border-collapse: collapse;
     border-style: none;
-
-    border-width: 1px;
-
-    color: #ffc1cf;
-
-    height: 15px;
-    width: 15px;
-  }
-
-  td.obstacle {
-    text-align: center;
-    font-style: "Courier New", Courier, monospace
-
-    border: 10px #ffffff thin;
-    border-color: #ffffff;
-    border-collapse: collapse;
-    border-style: none;
-
-    border-width: 1px;
+    padding: 6px;  /*necessary to account for the extra px*/
 
     color: #ffc1cf;
-    background-color: #ffffff;
 
-    height: 15px;
-    width: 15px;
+  }
+
+  div.cell.cell--obstacle {
+  	/*create appearance of small circles as obstacles, but is actually
+  		filled square with round edges and a thick border with the
+  		same color as background*/
+  	padding: 0px;
+
+  	border-width: 6px;
+    border-color: #ffc1cf;
+    border-style: solid;
+
+    color: #ffaab9;
+    background-color: #ffaab9;
+
+    border-radius: 20px;
+
+  }
+
+  div.cell.cell--emphasis {
+  	background-color: var(--emphasis--color);
   }
 
 
-  td.board:hover {
-    color: red;
-    background-color: #ffffff;
+  div.cell.cell--board:hover {
+    color: white;
+    background-color: var(--emphasis--color);
     cursor: pointer;
   }
 
-  td.obstacle:hover {
-    color: #ffffff;
-    background-color: #ffffff;
+  div.cell.cell--obstacle:hover {
+    /*color: #ffffff;
+    background-color: #ffffff;*/
+
+    pointer-events: none;  /* disable hover effects*/
   }
 
 
-  th.board {
-    font-style: "Courier New", Courier, monospace
-    padding: 10px;
-    border: 1px #ffb2c1 solid;
-    border-style: dashed;
-    color: #ffffff;
+  div.row {
 
-    border-width: 1px;
-  }
-
-
-
-  tr.board {
-    text-align: center;
-    font-style: "Courier New", Courier, monospace
-
-    border: 1px #ffffff thin;
+    /*border: 1px #ffffff thin;*/
     border-collapse: collapse;
     /*border-style: dashed;*/
 
     border-width: 1px;
+/*  	height: var(--cell-size);
+    width: var(--cell-size);
+*/
+/*    min-width: var(--cell-size);
+    min-height: var(--cell-size);
+    max-width: var(--cell-size);
+    max-height: var(--cell-size);*/
 
-    height: 15px;
+    display: inline-flex;
+    /*justify-content: space-around;*/
+
   }
 
   </style>
@@ -201,21 +233,19 @@
 
 
 </body>
-</html>
 
 
 
 <script>
 
-
-  levelCounter = -1;
+	levelCounter = -1;
   //var currLevel = game[levelCounter];
   //var currGB = currLevel.gboard;
 
   var currLevel;
   var currGB;
   var height, width;
-
+	//window.onload = newLevel();
   newLevel();
 
 
@@ -227,9 +257,9 @@
 
   function newLevel() {
     // clear current table
-    var tables = document.getElementsByTagName('table');
-    while (tables.length>0) {
-      tables[0].parentNode.removeChild(tables[0]);
+    var boardElement = document.getElementById('gameboard');
+    if (boardElement) {
+      boardElement.parentNode.removeChild(boardElement);
     }
 
 
@@ -250,28 +280,34 @@
   function drawBoard() {
     //var body = document.getElementsByTagName('body')[0];
 
-    var game = document.createElement("table");
+    var game = document.createElement("div");
     game.setAttribute("class", "board");
-
-    var board = document.createElement('tbody');
+    game.setAttribute("id", "gameboard");
+    game.setAttribute("alt", "Incompatible Browser?")
 
     for (var i=0; i<height; i++) {
-      var row = document.createElement("tr");
-      row.setAttribute("class","board");
+      var row = document.createElement("div");
+      row.setAttribute("class","row");
 
       for (var j=0; j<width; j++) {
 
         // create row square
 
-        var td = document.createElement('td');
-        td.setAttribute("class", "board");
-        td.style.padding="5px";
+        var td = document.createElement('div');
+        td.setAttribute("class", "cell");
+
 
         var id = (i+"_"+j);
         td.setAttribute("id",id);
 
-        var rowElement = document.createTextNode(currLevel.gboard.getValue(i,j));
+        //var rowElement = document.createTextNode(currLevel.gboard.getValue(i,j));
+        //var rowElement = document.createTextNode();
 
+        var rowElementInner = document.createElement('span');
+        var rowElementInnerContent = 
+        document.createTextNode(currLevel.gboard.getValue(i,j));
+        rowElementInner.appendChild(rowElementInnerContent);
+        td.appendChild(rowElementInner);
 
         // create button
 // BUTTON MAY BE UNNECESSARY SINCE THE TABLE ELEMENTS CAN BE CLICKED ON!
@@ -286,10 +322,11 @@
         //btn.setAttribute("onclick", `addClick(${i},${j})`); // i=y coord, j=x coord
 
         if (currLevel.gboard.getValue(i,j) == -1) {
-          td.setAttribute("class", "obstacle");
+          td.classList.add('cell--obstacle');
           // maybe setting to x is unnecessary
-          rowElement = document.createTextNode("X");
+          //rowElement = document.createTextNode(" ");
         } else {
+        	td.classList.add('cell--board');
           td.setAttribute("onclick", `addClick(${i},${j})`);
         }
         
@@ -313,15 +350,13 @@
         //rowElement.addEventListener('click', addClick(i,j), false);
 
 
-        td.appendChild(rowElement);
+        //td.appendChild(rowElement);
         row.appendChild(td);
 
       }
-      board.appendChild(row);
+      game.appendChild(row);
       
     }
-
-    game.appendChild(board);
    
     document.body.appendChild(game);
 
@@ -338,9 +373,14 @@
   var x1=null, y1=null;
 
   function addClick(i,j) {
+  	
+
     if (x1==null && y1==null) {
       y1 = i;
       x1 = j;
+
+      let element1 = document.getElementById(`${y1}_${x1}`);
+      element1.classList.add('cell--emphasis');
 
       console.log("yx: " + y1+","+x1);
     } else {
@@ -350,7 +390,10 @@
 
       if (x1!=j || y1!=i) {
         match(y1, x1, i, j);
+
       }
+      let element1 = document.getElementById(`${y1}_${x1}`);
+     	element1.classList.remove('cell--emphasis');
       x1=null;
       y1=null;
 
@@ -389,11 +432,15 @@
         console.log(currGB.toString());
 
         let element1 = document.getElementById(`${y1}_${x1}`);
-        element1.setAttribute("class", "remove");
+
+        element1.classList.remove('cell--board');
+        element1.classList.add('cell--remove');
+
         //element1.textContent = "";
 
         let element2 = document.getElementById(`${y2}_${x2}`);
-        element2.setAttribute("class", "remove");
+        element2.classList.remove('cell--board');
+        element2.classList.add('cell--remove');
         //element2.textContent = "";
 
         updateScore();
@@ -407,10 +454,15 @@
     var pearsLeft = currGB.solvePair();
     document.getElementById("score").innerHTML = "Score: " + pearsLeft;
     if (pearsLeft == 0) {
-      alert("You've completed Level 1 !");
+      //  will make level completion pop up more esthetically pleasing later
+      endOfLevelAlert();
       newLevel();
     }
 
+  }
+
+  function endOfLevelAlert() {
+  	alert("You've completed this level!");
   }
 
   
@@ -419,7 +471,7 @@
 </script>
 
 
-
+</html>
 
 
 
