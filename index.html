@@ -56,6 +56,15 @@
     background-color: #ffffff;
   }
 
+
+  p.start_msg {
+    position: fixed;
+    /*width: 50%;*/
+    min-width: 200px;
+    max-width: 60%;
+    overflow: hidden;
+  }
+
   p.topScore {
     position: fixed;
     top: 0;
@@ -226,11 +235,6 @@
   <br><br><br>
   <pre class="title">Hello Pears &hearts;</pre>
 
- <!--  <table class="board" id="playerBoard">
-
-  </table> -->
-
-
 
 </body>
 
@@ -248,6 +252,8 @@
 	//window.onload = newLevel();
   newLevel();
 
+  print_starter_msg();
+
 
 //document.getElementById("score").innerHTML = "Score: " + currGB.getUnsolvedPairs();
 
@@ -260,8 +266,13 @@
     var boardElement = document.getElementById('gameboard');
     if (boardElement) {
       boardElement.parentNode.removeChild(boardElement);
+      // must clear starting message if user finished level 1 before
+      //   it's time for message to disappear
     }
 
+    if (document.getElementById("starter_msg")) {
+      document.getElementById("starter_msg").innerHTML = " ";
+    }
 
 
     levelCounter++;
@@ -365,7 +376,88 @@
 
   }
 
-  //drawBoard();
+  function print_starter_msg() {
+    var msg = document.createElement('p');
+    msg.setAttribute("id", "starter_msg");
+    msg.setAttribute("class", "start_msg");
+
+    var linebreak = document.createElement('br');
+    var message = document.createTextNode("=== Story Line ===");
+    msg.appendChild(message);
+    msg.appendChild(linebreak);
+
+    message = document.createTextNode(
+      "Once upon a time, there was a dance where " + 
+      "pears from many tribes attended. The dance lasted hours " + 
+      "and hours, until eventually, it was time to go home. " + 
+      "To do so, they must venture through a dark forest where " + 
+      "the big, bad wolf resides! The evil wolf tends to attack "+ 
+      "only when his prey is alone, so this is where YOU come in! " + 
+      "Please show each fruit the path to another of its kind.");
+    msg.appendChild(message);
+    linebreak = document.createElement('br');
+    msg.appendChild(linebreak);
+    linebreak = document.createElement('br');
+    msg.appendChild(linebreak);
+
+    message = document.createTextNode("=== Instructions ===");
+    msg.appendChild(message);
+    linebreak = document.createElement('br');
+    msg.appendChild(linebreak);
+    
+    message = document.createTextNode("Each integer represents " + 
+      "one species of pear. They can be paired up by " + 
+      "using the mouse to click on the first integer, followed " +
+      "by a mouse click on the second. A valid path on the grid " +
+      "must have the following: ");
+    msg.appendChild(message);
+    linebreak = document.createElement('br');
+    msg.appendChild(linebreak);
+
+    var ordered_list = document.createElement('ol');
+    var list = document.createElement('li');
+    var list_item = document.createTextNode("A path that does not " + 
+      "travel through other integers or obstacles");
+    list.appendChild(list_item);
+    ordered_list.appendChild(list);
+
+    list = document.createElement('li');
+    list_item = document.createTextNode("A path that does needs 3 " + 
+      "or less turns");
+    list.appendChild(list_item);
+    ordered_list.appendChild(list);
+
+    list = document.createElement('li');
+    list_item = document.createTextNode("An integer can only be " + 
+      "matched with another integer with its equal value");
+    list.appendChild(list_item);
+    ordered_list.appendChild(list);
+
+    msg.appendChild(ordered_list);
+
+    message = document.createTextNode("=== Hint ===");
+    msg.appendChild(message);
+    linebreak = document.createElement('br');
+    msg.appendChild(linebreak);
+
+    message = document.createTextNode("Try to match up" + 
+      "pears that are horizontally or vertically next to each " + 
+      "other. Then try to find pairs around the border.");
+    msg.appendChild(message);
+    linebreak = document.createElement('br');
+    msg.appendChild(linebreak);
+
+    document.body.appendChild(msg);
+
+    // set to starter message to disappear after 2 minutes
+    setTimeout(`clear_starter_msg()`, 120000);  
+
+  }
+
+
+  function clear_starter_msg() {
+    document.getElementById("starter_msg").innerHTML = " ";
+  }
 
 
 
