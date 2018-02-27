@@ -11,7 +11,7 @@
 
 <html lang = "en-US">
 <head>
-  <title>Pears</title>
+  <title>Pears : twyin</title>
 
   <meta charset = "UTF-8">
 
@@ -39,7 +39,9 @@
   body {
     background-color: #ffc1cf;
     color: #ffffff;
-    margin: 0px 10px 10px 20px;
+    margin: 0px 10px 300px 20px; 
+    /* large bottom margin willallow user to scroll up a bit*/
+    /*score and timer will be shown on the top of the page still*/
   }
 
   button {
@@ -58,11 +60,11 @@
 
 
   p.start_msg {
-    position: fixed;
+  	font-size: 17px;
     /*width: 50%;*/
-    min-width: 200px;
-    max-width: 60%;
-    overflow: hidden;
+    min-width: 300px;
+    max-width: 70%;
+    line-height: 120%;
   }
 
   p.topScore {
@@ -103,6 +105,7 @@
     border-width: 1px;
 
     margin-right: 15px;
+    padding: 5px;
 
 /*    max-width: 700px;*/
 
@@ -229,7 +232,7 @@
   
 <body id="mainPage">
 
-  <p class="topScore" id="score">Score: </p>
+  <p class="topScore" id="score">Pears matched: </p>
   <p class="topTimer" id="timer">Timer: </p>
 
   <br><br><br>
@@ -249,6 +252,7 @@
   var currLevel;
   var currGB;
   var height, width;
+  var totalUnsolvedPairs;
 	//window.onload = newLevel();
   newLevel();
 
@@ -279,7 +283,9 @@
     currLevel = game[levelCounter];
     currGB = currLevel.gboard;
 
-    document.getElementById("score").innerHTML = "Score: " + currGB.getUnsolvedPairs();
+    totalUnsolvedPairs = currGB.getUnsolvedPairs();
+    document.getElementById("score").innerHTML = "Pears matched: " + 
+    	(totalUnsolvedPairs - currGB.getUnsolvedPairs()) + " / " + totalUnsolvedPairs;
 
     height = currLevel.gboard.getHeight();
     width = currLevel.gboard.getWidth();
@@ -382,17 +388,20 @@
     msg.setAttribute("class", "start_msg");
 
     var linebreak = document.createElement('br');
-    var message = document.createTextNode("=== Story Line ===");
+    msg.appendChild(linebreak);
+    var message = document.createTextNode("S T O R Y \u00A0L I N E");
+    // msg.setAttribute("class", "start_msg_title");
     msg.appendChild(message);
+    var linebreak = document.createElement('br');
     msg.appendChild(linebreak);
 
-    message = document.createTextNode(
-      "Once upon a time, there was a dance where " + 
+    message = document.createTextNode("Once upon a time in the " +
+      "land of fruits, there was a dance where " + 
       "pears from many tribes attended. The dance lasted hours " + 
       "and hours, until eventually, it was time to go home. " + 
-      "To do so, they must venture through a dark forest where " + 
+      "But to do so, they must venture through a dark forest where " + 
       "the big, bad wolf resides! The evil wolf tends to attack "+ 
-      "only when his prey is alone, so this is where YOU come in! " + 
+      "only when his prey is alone, so this is where YOU come in. " + 
       "Please show each fruit the path to another of its kind.");
     msg.appendChild(message);
     linebreak = document.createElement('br');
@@ -400,7 +409,7 @@
     linebreak = document.createElement('br');
     msg.appendChild(linebreak);
 
-    message = document.createTextNode("=== Instructions ===");
+    message = document.createTextNode("I N S T R U C T I O N S ");
     msg.appendChild(message);
     linebreak = document.createElement('br');
     msg.appendChild(linebreak);
@@ -408,8 +417,10 @@
     message = document.createTextNode("Each integer represents " + 
       "one species of pear. They can be paired up by " + 
       "using the mouse to click on the first integer, followed " +
-      "by a mouse click on the second. A valid path on the grid " +
-      "must have the following: ");
+      "by a mouse click on the second. You may hover over each " +
+      "tile to see which will be selected if you were to click " + 
+      "on it. You may travel outside of the board. A valid " + 
+      "path on the grid must have the following: ");
     msg.appendChild(message);
     linebreak = document.createElement('br');
     msg.appendChild(linebreak);
@@ -435,12 +446,12 @@
 
     msg.appendChild(ordered_list);
 
-    message = document.createTextNode("=== Hint ===");
+    message = document.createTextNode("H I N T");
     msg.appendChild(message);
     linebreak = document.createElement('br');
     msg.appendChild(linebreak);
 
-    message = document.createTextNode("Try to match up" + 
+    message = document.createTextNode("Start by matching " + 
       "pears that are horizontally or vertically next to each " + 
       "other. Then try to find pairs around the border.");
     msg.appendChild(message);
@@ -450,7 +461,7 @@
     document.body.appendChild(msg);
 
     // set to starter message to disappear after 2 minutes
-    setTimeout(`clear_starter_msg()`, 120000);  
+    //setTimeout(`clear_starter_msg()`, 120000);  
 
   }
 
@@ -521,7 +532,7 @@
         console.log("Valid: " + i + " turns needed ");
         currGB.setToZero(y1, x1);
         currGB.setToZero(y2, x2);
-        console.log(currGB.toString());
+        //console.log(currGB.toString());
 
         let element1 = document.getElementById(`${y1}_${x1}`);
 
@@ -544,7 +555,9 @@
 
   function updateScore() {
     var pearsLeft = currGB.solvePair();
-    document.getElementById("score").innerHTML = "Score: " + pearsLeft;
+    document.getElementById("score").innerHTML = "Pears matched: " + 
+    	(totalUnsolvedPairs - pearsLeft) + " / " + totalUnsolvedPairs;
+
     if (pearsLeft == 0) {
       //  will make level completion pop up more esthetically pleasing later
       endOfLevelAlert();
