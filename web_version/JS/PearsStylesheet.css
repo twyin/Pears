@@ -2,14 +2,14 @@
 /*https://twyin.github.io/Pears/*/
 
 :root {
-  --board-color: #f9b1bd;
-	--board-border-color: #ffffff;
-	--board-text-color: #ffffff;
+  --board-color: #ffd1d8;
+	--board-border-color: #333;
+	--board-text-color: #333;
   --board-text-shadow: #ef9899;
-	--page-text-color: #9c4646;
+	--page-text-color: #333;
 	--cell-size: 32px;
-	--emphasis-color: #efa2b4;
-	--page-background-color: #ffc1cf;
+	--emphasis-color: #ffb8c4;
+	--page-background-color: #fbe2e7;
 }
 
 body {
@@ -46,7 +46,7 @@ p.topScore {
   top: 0;
   width: 30%;
   max-width: 300px;
-  background-color: #ffced9;
+  background-color: var(--board-color);
   overflow: hidden;
 
   padding:10px;
@@ -73,7 +73,7 @@ p.topTimer {
 pre.title {
 	color: var(--board-text-color);
   font-size: 25px;
-  text-shadow: 0.5px 0.5px var(--page-text-color);
+  /*text-shadow: 0.5px 0.5px var(--page-text-color);*/
 }
 
 div.board{
@@ -111,7 +111,7 @@ div.board{
 
 div.cell {
 	color: var(--board-text-color);
-  text-shadow: 1px 1px 1px var(--board-text-shadow);
+/*  text-shadow: 1px 1px 1px var(--board-text-shadow);*/
 
   height: var(--cell-size);
   width: var(--cell-size);
@@ -181,7 +181,7 @@ div.cell.cell--emphasis {
 
 
 div.cell.cell--board:hover {
-  color: white;
+  /*color: white;*/
   background-color: var(--emphasis-color);
   cursor: pointer;
 }
