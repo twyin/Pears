@@ -2,14 +2,17 @@
 /*https://twyin.github.io/Pears/*/
 
 :root {
-  --board-color: #ffd1d8;
+  --board-color: #ffb8b8;
 	--board-border-color: #333;
 	--board-text-color: #333;
   --board-text-shadow: #ef9899;
-	--page-text-color: #333;
+  --board-box-shadow:;
+
 	--cell-size: 32px;
-	--emphasis-color: #ffb8c4;
+	--emphasis-color: #fff8f8;
 	--page-background-color: #fbe2e7;
+  --page-text-background-color: #fff8f8;
+  --page-text-color: #333;
 }
 
 body {
@@ -21,18 +24,23 @@ body {
 }
 
 p.start_msg {
+  /*decent alternative fonts: */
   /*font-family: 'Coming Soon', cursive;*/
+  /*font-family: 'Montserrat', sans-serif;*/
+
+  background-color: var(--page-text-background-color);
+  border-radius: 20px;
+  padding-left: 20px;
+  padding-right: 10px;
 
   font-family: 'Poiret One', sans-serif;
-
   font-weight: 600;
-
   /*text-shadow: 0.2px 0.2px #900;*/
 
 	font-size: 20px;
   /*width: 50%;*/
   min-width: 300px;
-  max-width: 80%;
+  max-width: 90%;
   /*line-height: 120%;*/
 }
 
@@ -46,7 +54,8 @@ p.topScore {
   top: 0;
   width: 30%;
   max-width: 300px;
-  background-color: var(--board-color);
+  background-color: var(--emphasis-color);
+  box-shadow: 6px 6px var(--board-color);
   overflow: hidden;
 
   padding:10px;
@@ -73,6 +82,7 @@ p.topTimer {
 pre.title {
 	color: var(--board-text-color);
   font-size: 25px;
+  font-family: 'Poiret One', sans-serif;
   /*text-shadow: 0.5px 0.5px var(--page-text-color);*/
 }
 
@@ -161,7 +171,7 @@ div.cell.cell--obstacle {
 		filled square with round edges and a thick border with the
 		same color as background*/
 	padding: 0px;
-  text-shadow: 0px 0px var(--page-background-color);
+  /*text-shadow: 0px 0px var(--page-background-color);*/
 
 	border-width: 6px;
   border-color: var(--page-background-color);

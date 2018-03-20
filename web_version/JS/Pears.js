@@ -147,6 +147,8 @@ function print_starter_msg() {
   msg.appendChild(message);
   linebreak = document.createElement('br');
   msg.appendChild(linebreak);
+  linebreak = document.createElement('br');
+  msg.appendChild(linebreak);
 
   document.body.appendChild(msg);
 
@@ -180,7 +182,9 @@ function addClick(i,j) {
       match(y1, x1, i, j);
     }
     let element1 = document.getElementById(`${y1}_${x1}`);
-    element1.classList.remove('cell--emphasis');
+    if (element1) {
+      element1.classList.remove('cell--emphasis');
+    }
     x1=null;
     y1=null;
   }
@@ -239,15 +243,43 @@ function updateScore() {
   document.getElementById("score").innerHTML = "Pears matched: " + 
     (totalUnsolvedPairs - pearsLeft) + " / " + totalUnsolvedPairs;
 
-  if (pearsLeft == 0) {
+  if (pearsLeft == 0 && levelCounter<(game.length-1)) {
     //  will make level completion pop up more esthetically pleasing later
     endOfLevelAlert();
     newLevel();
+  } else if (pearsLeft == 0 && levelCounter>=(game.length-1)){ // end of the game
+    endOfGameAlert();
+    endOfGame();
   }
 }
 
 
 function endOfLevelAlert() {
-  alert("You've completed this level!");
+  alert("You have successfully completed this level!");
+}
+
+function endOfGameAlert() {
+  alert("Congratulations on finishing Pears! " + 
+    "Thanks to you, all Pears have safely made it home. " +
+    "Hope you enjoyed playing! - T.Y.");
+}
+
+function endOfGame() {
+  // erase score
+  document.getElementById("score").innerHTML = "Pears matched: - / -";
+  
+  // change Hello to Goodbye
+  document.getElementById("greetMessage").innerHTML = "Goodbye Pears";
+  
+  // clear the table
+  var boardElement = document.getElementById('gameboard');
+  if (boardElement) {
+    boardElement.parentNode.removeChild(boardElement);
+    // must clear starting message if user finished level 1 before
+    //   it's time for message to disappear
+  }
+  if (document.getElementById("starter_msg")) {
+    document.getElementById("starter_msg").innerHTML = " ";
+  }
 }
 
