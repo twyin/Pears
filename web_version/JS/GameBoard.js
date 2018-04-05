@@ -227,7 +227,9 @@ class GameBoard extends Board {
 // minTurns should be a method of GameBoard that return minimum
 //   number of turns from A(y1,x1) to A'(y2,x2)
     minTurns(y1, x1, y2, x2) {
-        console.log("min turns between y1 x1 y2 x2: " + y1+" "+x1+" "+y2+" "+x2);
+
+    	// ====================== display coordinates ======================
+        // console.log("min turns between y1 x1 y2 x2: " + y1+" "+x1+" "+y2+" "+x2);
 
 
         // (y1,x1) is A, (y2,x2) is A'
@@ -251,16 +253,9 @@ class GameBoard extends Board {
             pb.setToZero(i, j);
           }
         }
-        
 
-        
-        
-        
         pb.pave(this, y1, x1, y2, x2);
  //       console.log(pb.toString());
-
-
-        
         
         // shouldn't have anything other than -1/0/1's on it so 
         //   not necessary to make it a new Game board
@@ -290,7 +285,10 @@ class GameBoard extends Board {
         while ((found==false) && (addedTurns <= maxT)) {
             //console.log("turnMarker = " + turnMarker);
             pb.addTurn(turnMarker);
-            console.log(pb.toString());
+
+
+            // ====================== display each paths board ======================
+            // console.log(pb.toString());
 
             //System.out.println("With " + addedTurns + " turns");
             //System.out.println(pb);

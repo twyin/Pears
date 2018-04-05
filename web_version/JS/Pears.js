@@ -1,6 +1,14 @@
 // Ting Yin
 // https://twyin.github.io/Pears/
 
+// ============== Print statements to uncomment for debugging ==============
+//	Pears addClick()
+//	Pears match()
+// 	GameBoard minTurns()
+
+
+
+
 function newLevel() {
   // clear current table
   var boardElement = document.getElementById('gameboard');
@@ -172,9 +180,9 @@ function addClick(i,j) {
     if (currGB.getValue(y1,x1)) {
       element1.classList.add('cell--emphasis');
     }
-    console.log("yx: " + y1+","+x1);
+    // console.log("yx: " + y1+","+x1);
   } else {
-    console.log("ji: " + i+","+j);
+    // console.log("ji: " + i+","+j);
 
     //match(++y1, ++x1, ++y2, ++x2);  //accomodate paths
 
@@ -192,7 +200,7 @@ function addClick(i,j) {
 
 
 function match(y1, x1, y2, x2) {
-  console.log("y1 x1 y2 x2: " + y1+" "+x1+" "+y2+" "+x2);
+  // console.log("y1 x1 y2 x2: " + y1+" "+x1+" "+y2+" "+x2);
 
 //    console.log("To quit, enter -1");
 //    console.log("Please enter coordinate separated by a space");
@@ -209,10 +217,10 @@ function match(y1, x1, y2, x2) {
   } else {
 
     var i = currGB.minTurns(y1, x1, y2, x2);
-    console.log("minTurns: " + i);
+    // console.log("minTurns: " + i);
    
     if (i > maxTurns) {
-      console.log("Invalid: must be within " + maxTurns + " turns");
+      // console.log("Invalid: must be within " + maxTurns + " turns");
     } else {
       // valid number of turns
       console.log("Valid: " + i + " turns needed ");
