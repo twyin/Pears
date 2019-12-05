@@ -87,16 +87,12 @@ pre.title {
 }
 
 div.board{
-  border-collapse: collapse;
-  border: var(--board-border-color) solid thin;
 
   font-family: 'Comfortaa', cursive;
   
   /*font-family: 'Coming Soon', cursive;*/
 
   font-size: 16px;
-
-  border-width: 1px;
 
   margin-right: 15px;
   padding: 5px;
@@ -138,7 +134,7 @@ div.cell {
 
   display: inline-flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
 
   margin: 5px 5px 5px 5px;
 
@@ -146,9 +142,8 @@ div.cell {
 }
 
 div.cell.cell--board {
-  border: var(--board-border-color) thin;
-  border-collapse: collapse;
-  border-style: dashed;
+  padding: 6px;
+  background-image: url(https://image.flaticon.com/icons/svg/123/123239.svg);
 }
 
 div.cell.cell--remove {
