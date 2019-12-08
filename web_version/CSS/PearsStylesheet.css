@@ -8,7 +8,8 @@
   --board-text-shadow: #ef9899;
   --board-box-shadow:;
 
-	--cell-size: 32px;
+	--cell-size: 26px;
+  --cell-pading: 6px;
 	--emphasis-color: #fff8f8;
 	--page-background-color: #fbe2e7;
   --page-text-background-color: #fff8f8;
@@ -55,7 +56,7 @@ p.topScore {
   width: 30%;
   max-width: 300px;
   background-color: var(--emphasis-color);
-  box-shadow: 6px 6px var(--board-color);
+  box-shadow: var(--cell-pading) var(--cell-pading) var(--board-color);
   overflow: hidden;
 
   padding:10px;
@@ -127,7 +128,7 @@ div.cell {
   max-width: var(--cell-size);
   max-height: var(--cell-size);
 
-  padding: 5px;
+  padding: var(--cell-pading);
   /*border-collapse: collapse;*/
   border-width: 1px;
   border-radius: 7px;
@@ -136,15 +137,96 @@ div.cell {
   justify-content: center;
   align-items: flex-end;
 
-  margin: 5px 5px 5px 5px;
-
-
+  margin: 6px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 32px;
 }
 
-div.cell.cell--board {
-  padding: 6px;
-  background-image: url(https://image.flaticon.com/icons/svg/123/123239.svg);
+div.pear {
+  background-image: url(https://image.flaticon.com/icons/svg/2077/2077181.svg);
 }
+
+div.cell--board-1 {
+  background-image: url(https://image.flaticon.com/icons/svg/700/700804.svg);
+}
+
+div.cell--board-2 {
+  background-image: url(https://image.flaticon.com/icons/svg/135/135695.svg);
+}
+
+div.cell--board-3 {
+  background-image: url(https://image.flaticon.com/icons/svg/721/721238.svg);
+}
+
+div.cell--board-4 {
+  background-image: url(https://image.flaticon.com/icons/svg/1571/1571196.svg);
+}
+
+div.cell--board-5 {
+  background-image: url(https://image.flaticon.com/icons/svg/590/590775.svg);
+}
+
+div.cell--board-6 {
+  background-image: url(https://image.flaticon.com/icons/svg/765/765560.svg);
+}
+
+div.cell--board-7 {
+  background-image: url(https://image.flaticon.com/icons/svg/1663/1663356.svg);
+}
+
+div.cell--board-8 {
+  background-image: url(https://image.flaticon.com/icons/svg/2224/2224255.svg);
+}
+
+div.cell--board-9 {
+  background-image: url(https://image.flaticon.com/icons/svg/1838/1838901.svg);
+}
+
+div.cell--board-10 {
+  background-image: url(https://image.flaticon.com/icons/svg/928/928143.svg);
+}
+
+div.cell--board-11 {
+  background-image: url(https://image.flaticon.com/icons/svg/135/135631.svg);
+}
+
+div.cell--board-12 {
+  background-image: url(https://image.flaticon.com/icons/svg/1515/1515002.svg);
+}
+
+div.cell--board-13 {
+  background-image: url(https://image.flaticon.com/icons/svg/1135/1135549.svg);
+}
+
+div.cell--board-14 {
+  background-image: url(https://image.flaticon.com/icons/svg/1135/1135551.svg);
+}
+
+div.cell--board-15 {
+  background-image: url(https://image.flaticon.com/icons/svg/878/878030.svg);
+}
+
+div.cell--board-16 {
+  background-image: url(https://image.flaticon.com/icons/svg/2224/2224087.svg);
+}
+
+div.cell--board-17 {
+  background-image: url(https://image.flaticon.com/icons/svg/1515/1515038.svg);
+}
+
+div.cell--board-18 {
+  background-image: url(https://image.flaticon.com/icons/svg/1475/1475932.svg);
+}
+
+div.cell--board-19 {
+  background-image: url(https://image.flaticon.com/icons/svg/765/765538.svg);
+}
+
+div.cell--board-20 {
+  background-image: url(https://image.flaticon.com/icons/svg/765/765558.svg);
+}
+
 
 div.cell.cell--remove {
   text-align: center;
@@ -155,7 +237,7 @@ div.cell.cell--remove {
   border-color: #ffffff;
   border-collapse: collapse;
   border-style: none;
-  padding: 6px;  /*necessary to account for the extra px*/
+  padding: var(--cell-pading);  /*necessary to account for the extra px*/
 
   color: var(--page-background-color);
 
@@ -166,14 +248,14 @@ div.cell.cell--obstacle {
 		filled square with round edges and a thick border with the
 		same color as background*/
 	padding: 0px;
-  /*text-shadow: 0px 0px var(--page-background-color);*/
+  text-shadow: 0px 0px var(--page-background-color);
 
-	border-width: 6px;
+	border-width: var(--cell-pading);
   border-color: var(--page-background-color);
   border-style: solid;
 
   color: #ffaab9;
-  background-color: #ffaab9;
+  background-color: #000;
 
   border-radius: 20px;
 
@@ -216,5 +298,11 @@ div.row {
 
   display: inline-flex;
   /*justify-content: space-around;*/
+}
+
+a.icon-credits {
+  position: fixed;
+  bottom: 2px;
+  right: 2px;
 }
 

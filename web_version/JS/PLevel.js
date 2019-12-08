@@ -20,9 +20,8 @@ class PLevel {
 	
 }
 
-
 // no obstacles or timer for level 1
-let level1 = new PLevel(4, 6, 8, null, null);  // 7 by 10, 9 patterns
+let level1 = new PLevel(4, 7, 10, null, null);  // 4 by 7, 10 patterns
 
 let ob2 = [13, 27,29,31,33,35, 49];  // 13 obstacles within 99 squares
 let level2 = new PLevel(7, 9, 12, ob2, null);
