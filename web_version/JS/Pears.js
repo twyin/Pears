@@ -44,12 +44,36 @@ function drawBoard() {
   game.setAttribute("id", "gameboard");
   game.setAttribute("alt", "Incompatible Browser?")
 
+  // Cosmetic Top Row
+  let topRow = document.createElement("div");
+  topRow.setAttribute("class","row");
+
+  // Top Left Corner
+  var topLeft = document.createElement('div');
+  topLeft.classList.add("cell", "cell--path", "corner");
+  topRow.appendChild(topLeft);
+  // Top T Cells
+  for (var i=0; i<width; i++) {
+    var td = document.createElement('div');
+    td.classList.add("cell", "cell--path", "t");
+    topRow.appendChild(td);
+  }
+  // Top Right Corner
+  var topRight = document.createElement('div');
+  topRight.classList.add("cell", "cell--path", "corner", "rotate90");
+  topRow.appendChild(topRight);
+  game.appendChild(topRow);
+
   for (var i=0; i<height; i++) {
     var row = document.createElement("div");
     row.setAttribute("class","row");
 
-    for (var j=0; j<width; j++) {
+    // Cosmetic Left Column
+    var leftTd = document.createElement('div');
+    leftTd.classList.add("cell", "cell--path", "t", "rotate270");
+    row.appendChild(leftTd);
 
+    for (var j=0; j<width; j++) {
       // create row square
 
       var td = document.createElement('div');
@@ -80,8 +104,34 @@ function drawBoard() {
       }
       row.appendChild(td);
     }
+
+    // Cosmetic Right Column
+    var rightTd = document.createElement('div');
+    rightTd.classList.add("cell", "cell--path", "t", "rotate90");
+    row.appendChild(rightTd);
+
     game.appendChild(row); 
   }
+
+  // Cosmetic Bottom Row
+  let bottomRow = document.createElement("div");
+  bottomRow.setAttribute("class","row");
+  // Bottom Left Corner
+  var bottomLeft = document.createElement('div');
+  bottomLeft.classList.add("cell", "cell--path", "corner", "rotate270");
+  bottomRow.appendChild(bottomLeft);
+  // Bottom T Cells
+  for (var i=0; i<width; i++) {
+    var td = document.createElement('div');
+    td.classList.add("cell", "cell--path", "t", "rotate180");
+    bottomRow.appendChild(td);
+  }
+  // Bottom Right Corner
+  var bottomRight = document.createElement('div');
+  bottomRight.classList.add("cell", "cell--path", "corner", "rotate180");
+  bottomRow.appendChild(bottomRight);
+  game.appendChild(bottomRow);
+
   document.body.appendChild(game);
 }
 
@@ -117,32 +167,27 @@ function print_starter_msg() {
   msg.appendChild(message);
   linebreak = document.createElement('br');
   msg.appendChild(linebreak);
+
   
-  message = document.createTextNode("Each integer can be paired up to " + 
-    "another by clicking on the first integer, followed " +
-    "by another click on the second one. " + 
-    "You must be able to direct a path from one " +
-    "integer to the other in order to create a pair. A " +
-    "valid path on the grid may wrap around the board and " + 
-    "must have the following: ");
+  
+  message = document.createTextNode("Pair two matching fruits together by clicking on them with your mouse. Two fruits can be paired together if there is a path joining them that:");
   msg.appendChild(message);
   linebreak = document.createElement('br');
   msg.appendChild(linebreak);
 
-  var ordered_list = document.createElement('ol');
+  var unordered_list = document.createElement('ul');
   var list = document.createElement('li');
-  var list_item = document.createTextNode("it does not " + 
-    "cross through other integers or obstacles");
+  var list_item = document.createTextNode("does not " + 
+    "cross through other fruits or obstacles, and");
   list.appendChild(list_item);
-  ordered_list.appendChild(list);
+  unordered_list.appendChild(list);
 
   list = document.createElement('li');
-  list_item = document.createTextNode("the path it takes " +
-    "requires at most 3 turns");
+  list_item = document.createTextNode("requires at most 3 turns");
   list.appendChild(list_item);
-  ordered_list.appendChild(list);
+  unordered_list.appendChild(list);
 
-  msg.appendChild(ordered_list);
+  msg.appendChild(unordered_list);
 
   message = document.createTextNode("H I N T");
   msg.appendChild(message);
@@ -229,16 +274,14 @@ function match(y1, x1, y2, x2) {
       //console.log(currGB.toString());
 
       let element1 = document.getElementById(`${y1}_${x1}`);
-      element1.classList.remove('cell--board');
-      element1.classList.remove('cell--board-' + intA);
-      element1.classList.add('cell--remove');
+      element1.classList.remove('cell--board', 'cell--board-' + intA);
+      element1.classList.add('cell--remove', 'cell--path', 'cross');
 
       //element1.textContent = "";
 
       let element2 = document.getElementById(`${y2}_${x2}`);
-      element2.classList.remove('cell--board');
-      element2.classList.remove('cell--board-' + intB);
-      element2.classList.add('cell--remove');
+      element2.classList.remove('cell--board', 'cell--board-' + intB);
+      element2.classList.add('cell--remove', 'cell--path', 'cross');
       //element2.textContent = "";
 
       updateScore();
