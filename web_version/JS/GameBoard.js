@@ -5,7 +5,6 @@ class GameBoard extends Board {
         return max;
     }
 
-
 // constructor of gameboard
     constructor(h, w, p, ob) {
         super(h, w);
@@ -26,12 +25,9 @@ class GameBoard extends Board {
         } else {
             this.unsolvedPairs = h*w/2;
         }
-        
-        
     }
     
 // getter's
-    
     getPatterns() {
         return this.patterns;
     }
@@ -127,8 +123,6 @@ class GameBoard extends Board {
             boardArray[this.obstacles[i]] = -1;
         }
 
-        
-
         for (i=0; i<total; i++) {
         // reason for two counters, j to go down boardArray, j to count
         //   empty spaces. This is so no new value is assigned to obstacle
@@ -222,7 +216,6 @@ class GameBoard extends Board {
 
         
 
-        
 
 // minTurns should be a method of GameBoard that return minimum
 //   number of turns from A(y1,x1) to A'(y2,x2)
@@ -243,8 +236,6 @@ class GameBoard extends Board {
 // make an empty board with extra zero's around first, and -1 
 //   in place of patterns
 
-
-
         let pb = new PathsBoard(height, width); 
 //        console.log(pb.toString());
         
@@ -258,8 +249,7 @@ class GameBoard extends Board {
  //       console.log(pb.toString());
         
         // shouldn't have anything other than -1/0/1's on it so 
-        //   not necessary to make it a new Game board
-        
+        //   not necessary to make it a new Game board    
 
 // index for paths board is different than that of gameboard:
 // -1 is obstacles and patterns, things that a path can't travel thru
@@ -277,15 +267,12 @@ class GameBoard extends Board {
         let turnMarker = 1;  
         // turnMarker marks turns reachable within 0 turn with 1, 1 turn with 2, etc
         let maxT = GameBoard.maxTurns;
-        //debugger;
-
 
 // remove comment indicator when addTurn() works properly;
 // SHOULD be able to actual minimum of turns needed
         while ((found==false) && (addedTurns <= maxT)) {
             //console.log("turnMarker = " + turnMarker);
             pb.addTurn(turnMarker);
-
 
             // ====================== display each paths board ======================
             // console.log(pb.toString());
@@ -306,7 +293,5 @@ class GameBoard extends Board {
         }
         // else
         return maxT+1;
-    
     }
 }
-

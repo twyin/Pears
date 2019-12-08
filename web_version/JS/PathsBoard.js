@@ -1,7 +1,7 @@
 class PathsBoard extends Board{
     
 // constructor of empty board
-    constructor(h, w, b) {     // feb 15: why is there a b here..
+    constructor(h, w, b) {
         super(h,w, b);
     }
     
@@ -56,7 +56,6 @@ class PathsBoard extends Board{
 //      System.out.print(" up by " + (extend-1));
         
     }
-
         
 // helper function for addTurns that will extend 1 DOWNwards until it 
 //  either hits the edge or runs into an occupied coordinate
@@ -151,19 +150,9 @@ class PathsBoard extends Board{
                     this.extendDOWN( i,j, turnMarker+1);
                     this.extendLEFT( i,j, turnMarker+1);
                     this.extendRIGHT(i,j, turnMarker+1); 
-
-//                  System.out.println(" done extending");
                 }
             }
         }
-/*      for (i=0; i<height; i++) {
-            for (j=0; j<width; j++) {
-                if (this.getValue(i, j)>1) {
-                    this.setValue(i, j, 1);
-                }
-            }
-        }
-*/
     }
 
 }

@@ -9,7 +9,6 @@ class Board {
     }
   }
   
-  
 // getter's
   getHeight() {
     return this.height;
@@ -25,8 +24,7 @@ class Board {
   getValue(h, w) {
     return this.board[h][w];
   }
-  
-  
+   
 // setter's
 // height and width should most definitely not change throughout
 //   the game
@@ -46,13 +44,6 @@ class Board {
     this.board[h][w]=0;
   }
   
-  
-// ============================================================================
-// ============================================================================
-
-  
-// ============================================================================
-// ============================================================================
   toString() { 
     let h = this.height;
     let w = this.width; 
@@ -65,7 +56,6 @@ class Board {
     //let numRight = w*3+4;
     let finalHeader = '='.repeat(leftPadding) + ' ' + boardName + 
                       ' ' + '='.repeat(rightPadding);
-    
     let drawBoard = '';
     for (let i=0; i<h; i++) {
       drawBoard += "[";
@@ -81,9 +71,4 @@ class Board {
     }
     return finalHeader + '\n' + drawBoard;
   }
-// ============================================================================
-// ============================================================================
-  
 }
-
-
