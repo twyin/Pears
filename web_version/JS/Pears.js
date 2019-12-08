@@ -7,8 +7,6 @@
 // 	GameBoard minTurns()
 
 
-
-
 function newLevel() {
   // clear current table
   var boardElement = document.getElementById('gameboard');
