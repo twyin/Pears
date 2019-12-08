@@ -165,6 +165,14 @@ function print_starter_msg() {
   msg.appendChild(message);
   linebreak = document.createElement('br');
   msg.appendChild(linebreak);
+  linebreak = document.createElement('br');
+  msg.appendChild(linebreak);
+  image = document.createElement("img");
+  image.setAttribute("src", "web_version/IMG/instruction.png");
+  image.setAttribute("style", "width: 350px;");
+  msg.appendChild(image);
+  linebreak = document.createElement('br');
+  msg.appendChild(linebreak);
 
   
   
@@ -176,7 +184,7 @@ function print_starter_msg() {
   var unordered_list = document.createElement('ul');
   var list = document.createElement('li');
   var list_item = document.createTextNode("does not " + 
-    "cross through other fruits or obstacles, and");
+    "cross through rocks or other fruits, and");
   list.appendChild(list_item);
   unordered_list.appendChild(list);
 

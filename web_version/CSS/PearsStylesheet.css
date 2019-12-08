@@ -247,8 +247,10 @@ div.cell.cell--remove {
 }
 
 div.cell.cell--obstacle {
-  background-image: url(https://image.flaticon.com/icons/svg/826/826895.svg);
-  background-color: #d4a996;
+  background-image: url(https://image.flaticon.com/icons/svg/672/672632.svg);
+  background-size: cover;
+  margin: 0;
+  padding: 12px;
 }
 
 div.cell.cell--path {
@@ -294,9 +296,9 @@ div.cell.cell--board:hover {
 }
 
 div.cell.cell--obstacle:hover {
-  /*color: #ffffff;
-  background-color: #ffffff;*/
-
+  pointer-events: none;  /* disable hover effects*/
+}
+div.cell.cell--remove:hover {
   pointer-events: none;  /* disable hover effects*/
 }
 
