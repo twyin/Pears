@@ -258,15 +258,10 @@ function match(y1, x1, y2, x2) {
   if (intA!=intB || intA==0 || intB==0) {
     // console.log("Invalid pear");
   } else {
-
-    var i = currGB.minTurns(y1, x1, y2, x2);
-    // console.log("minTurns: " + i);
-   
+    var i = currGB.minTurns(y1, x1, y2, x2); 
     if (i > maxTurns) {
-      // console.log("Invalid: must be within " + maxTurns + " turns");
     } else {
       // valid number of turns
-      console.log("Valid: " + i + " turns needed ");
       currGB.setToZero(y1, x1);
       currGB.setToZero(y2, x2);
       //console.log(currGB.toString());
@@ -274,7 +269,6 @@ function match(y1, x1, y2, x2) {
       let element1 = document.getElementById(`${y1}_${x1}`);
       element1.classList.remove('cell--board', 'cell--board-' + intA);
       element1.classList.add('cell--remove', 'cell--path', 'cross');
-
       //element1.textContent = "";
 
       let element2 = document.getElementById(`${y2}_${x2}`);

@@ -5,10 +5,6 @@ class PathsBoard extends Board{
         super(h,w, b);
     }
     
-    
-// ============================================================================
-// ============================================================================
-
 
 // method to make new board into pure path and non-path squares, in
 //   other words, everything besides 0's are non-path
@@ -41,19 +37,17 @@ class PathsBoard extends Board{
         let extend = 1;
         let UP = true;
         while (UP == true) {
-            if (i-extend >= 0 && this.getValue(i-extend, j) != -1) {
+            if (i-extend >= 0 && this.getValue(i-extend, j) === 0) {
                 //this.setValue(i-extend, j, turnMarker);
-                if (this.getValue(i-extend, j)==0) {
-                    this.setValue(i-extend, j, turnMarker);
-                } // else if it's not zero, don't change its value
+                // if (this.getValue(i-extend, j) === 0) {
+                //     this.setValue(i-extend, j, turnMarker);
+                // } // else if it's not zero, don't change its value
+                this.board[i-extend][j] = turnMarker;
                 ++extend;
-//              System.out.print("1 up, ");
             } else {
-//              System.out.println(" false ^");
                 UP=false;
             }
         }
-//      System.out.print(" up by " + (extend-1));
         
     }
         
@@ -66,19 +60,17 @@ class PathsBoard extends Board{
         let height = this.getHeight();
         let DOWN = true;
         while (DOWN == true) {
-            if (i+extend<height && this.getValue(i+extend, j) != -1) {
+            if (i+extend<height && this.getValue(i+extend, j) === 0) {
                 //this.setValue(i+extend, j, turnMarker);
-                if (this.getValue(i+extend, j)==0) {
-                   this.setValue(i+extend, j, turnMarker); 
-                }
+                // if (this.getValue(i+extend, j) === 0) {
+                //    this.setValue(i+extend, j, turnMarker); 
+                // }
+                this.board[i+extend][j] = turnMarker;
                 ++extend;
-//              System.out.print(" 1 down, ");
             } else {
-//              System.out.println(" false DOWNS");
                 DOWN=false;
             }
         }
-//      System.out.print(" down by " + (extend-1));
     }
     
     
@@ -90,18 +82,17 @@ class PathsBoard extends Board{
         let extend = 1;
         let LEFT = true;
         while (LEFT == true) {
-            if (j-extend >=0 && this.getValue(i, j-extend) != -1) {
-                if (this.getValue(i, j-extend)==0) {
-                    this.setValue(i, j-extend, turnMarker);
-                }
+            if (j-extend >=0 && this.getValue(i, j-extend) === 0) {
+                // if (this.getValue(i, j-extend) === 0) {
+                //     this.setValue(i, j-extend, turnMarker);
+                // }
+                this.board[i][j-extend] = turnMarker;
                 ++extend;
-//              System.out.print("1 left, ");
-            } else {
+            } 
+            else {
                 LEFT=false;
-//              System.out.println("false <-");
             }
         }
-//      System.out.print(" left by " + (extend-1));
         
     }
     
@@ -115,18 +106,16 @@ class PathsBoard extends Board{
         let width = this.getWidth();
         let RIGHT = true;
         while (RIGHT == true) {
-            if ((j+extend) < width && this.getValue(i, j+extend) != -1) {
-                if (this.getValue(i, j+extend)==0) {
-                    this.setValue(i, j+extend, turnMarker);
-                }
-//              System.out.print(" 1 right, ");
+            if ((j+extend) < width && this.getValue(i, j+extend) === 0) {
+                // if (this.getValue(i, j+extend) === 0) {
+                //     this.setValue(i, j+extend, turnMarker);
+                // }
+                this.board[i][j+extend] = turnMarker
                 ++extend;
             } else {
                 RIGHT=false;
-//              System.out.println("false ->");
             }
         }
-//      System.out.print(" right by " + (extend-1));
     }
     
     
@@ -136,16 +125,11 @@ class PathsBoard extends Board{
     addTurn(turnMarker) {
         let height = this.getHeight();
         let width = this.getWidth();
-//      int extend;
-//      boolean UP, DOWN, LEFT, RIGHT;
         for (let i=0; i<height; i++) {
             for (let j=0; j<width; j++) {
                 if (this.getValue(i, j) == turnMarker) {
-//                  System.out.println("extend " + turnMarker + " at " + i + " " + j);
+//                  console.log("extend " + turnMarker + " at " + i + " " + j);
                     // extend 1 up/down/left/right until it hits edge or -1
-                    // DO NOT INCREMENT TURNMARKER UNTIL ENTIRE BOARD HAS BEEN GONE THRU
-                    // OR ELSE REST OF BOARD WILL LOOK FOR DIFFERNT VALUE AND INCREMENT *THAT*
-//                  System.out.println(turnMarker);
                     this.extendUP(   i,j, turnMarker+1);
                     this.extendDOWN( i,j, turnMarker+1);
                     this.extendLEFT( i,j, turnMarker+1);
@@ -153,54 +137,6 @@ class PathsBoard extends Board{
                 }
             }
         }
+        // console.log(this.toString());
     }
-
 }
-
-
-/////////////////// Testing ///////////////////////
-/*
-
-let justinsBoard = new Board(3, 5);
-for (let i = 0; i < 3; i++) {
-  for (let j = 0; j < 5; j++) {
-    justinsBoard.setToZero(i, j);
-  }
-}
-console.log(justinsBoard.toString());
-
-let gb1 = new GameBoard(5,7,4,[4,6,13,20]);
-for (let i = 0; i < 5; i++) {
-  for (let j = 0; j < 7; j++) {
-    if (gb1.getValue(i,j)!=-1) {
-      gb1.setToZero(i, j);  
-    }
-  }
-}
-
-gb1.fill();
-
-console.log(gb1.toString());
-
-console.log(gb1.shuffle());
-console.log(gb1.toString());
-console.log(gb1.minTurns(0,0,1,0));
-
-*/
-
-/* 
-temporary comment for a board that brought up a path related problem
-the two 8's could not be matched up because function said it took 4 turns
-fixed it by changing if statements in extendsUP/DOWN/LEFT/RIGHT from 
-if (current_value == 0) {change to TURNMARKER} to
-if (current_value != -1) {change}
-"=========== GameBoard ============
-[  0  0  0  0  0  0  0  0  0  0  ]
-[  0  0  0  0  0  0  0  0  0  0  ]
-[ 11  9  0  6  0  0  0  8  0  0  ]
-[  0  4  2  6  5  6  7  0  0  0  ]
-[  3  8  0  1  4  2  3  5  0  0  ]
-[  0  0  0  7  0  6  9  0  0  0  ]
-[  0  0  0  0  0  1  0 11  0  0  ]
-"
-*/

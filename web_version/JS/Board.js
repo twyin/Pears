@@ -63,7 +63,11 @@ class Board {
         if (this.board[i][j]==null) {
           //System.out.print("null");
           drawBoard += 'n'.padStart(3);
-        } else {
+        } 
+        else if (this.board[i][j] === -1) {
+          drawBoard += '|'.padStart(3);
+        }
+        else {
           drawBoard += this.board[i][j].toString().padStart(3);
         }
       }

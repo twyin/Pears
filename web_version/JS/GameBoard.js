@@ -237,7 +237,7 @@ class GameBoard extends Board {
 //   in place of patterns
 
         let pb = new PathsBoard(height, width); 
-//        console.log(pb.toString());
+       // console.log(pb.toString());
         
         for (let i = 0; i < height; i++) {
           for (let j = 0; j < width; j++) {
@@ -246,7 +246,7 @@ class GameBoard extends Board {
         }
 
         pb.pave(this, y1, x1, y2, x2);
- //       console.log(pb.toString());
+       // console.log(pb.toString());
         
         // shouldn't have anything other than -1/0/1's on it so 
         //   not necessary to make it a new Game board    
