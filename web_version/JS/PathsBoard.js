@@ -37,12 +37,10 @@ class PathsBoard extends Board{
         let extend = 1;
         let UP = true;
         while (UP == true) {
-            if (i-extend >= 0 && this.getValue(i-extend, j) === 0) {
-                //this.setValue(i-extend, j, turnMarker);
-                // if (this.getValue(i-extend, j) === 0) {
-                //     this.setValue(i-extend, j, turnMarker);
-                // } // else if it's not zero, don't change its value
-                this.board[i-extend][j] = turnMarker;
+            if (i-extend >= 0 && this.getValue(i-extend, j) !== -1) {
+                if (this.getValue(i-extend, j) === 0) {
+                    this.board[i-extend][j] = turnMarker;
+                }
                 ++extend;
             } else {
                 UP=false;
@@ -60,12 +58,10 @@ class PathsBoard extends Board{
         let height = this.getHeight();
         let DOWN = true;
         while (DOWN == true) {
-            if (i+extend<height && this.getValue(i+extend, j) === 0) {
-                //this.setValue(i+extend, j, turnMarker);
-                // if (this.getValue(i+extend, j) === 0) {
-                //    this.setValue(i+extend, j, turnMarker); 
-                // }
-                this.board[i+extend][j] = turnMarker;
+            if (i+extend<height && this.getValue(i+extend, j) !== -1) {
+                if (this.getValue(i+extend, j) === 0) {
+                    this.board[i+extend][j] = turnMarker;
+                }
                 ++extend;
             } else {
                 DOWN=false;
@@ -82,11 +78,10 @@ class PathsBoard extends Board{
         let extend = 1;
         let LEFT = true;
         while (LEFT == true) {
-            if (j-extend >=0 && this.getValue(i, j-extend) === 0) {
-                // if (this.getValue(i, j-extend) === 0) {
-                //     this.setValue(i, j-extend, turnMarker);
-                // }
-                this.board[i][j-extend] = turnMarker;
+            if (j-extend >=0 && this.getValue(i, j-extend) !== -1) {
+                if (this.getValue(i, j-extend) === 0) {
+                    this.board[i][j-extend] = turnMarker;
+                }
                 ++extend;
             } 
             else {
@@ -106,11 +101,10 @@ class PathsBoard extends Board{
         let width = this.getWidth();
         let RIGHT = true;
         while (RIGHT == true) {
-            if ((j+extend) < width && this.getValue(i, j+extend) === 0) {
-                // if (this.getValue(i, j+extend) === 0) {
-                //     this.setValue(i, j+extend, turnMarker);
-                // }
-                this.board[i][j+extend] = turnMarker
+            if ((j+extend) < width && this.getValue(i, j+extend) !== -1) {
+                if (this.getValue(i, j+extend) === 0) {
+                    this.board[i][j+extend] = turnMarker
+                }
                 ++extend;
             } else {
                 RIGHT=false;
